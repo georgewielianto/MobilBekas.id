@@ -9,6 +9,8 @@ use App\Http\Controllers\RegisterController;
 
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Controllers\ProductController;
+
 
 
 
@@ -25,12 +27,19 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/home', function () {
+    return view('home', [ProductController::class, 'products'])->name('products');
 });
 
 
-Route::get('/', [HomeController::class, 'home'])->name('home');
+
+Route::get('/home', [HomeController::class, 'home'])->name('home');
+
+Route::post('/upload', [HomeController::class, 'upload'])->name('upload');
+
+Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+
 
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
@@ -43,5 +52,20 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect('/login');
 })->name('logout');
+
+
+Route::get('/admin', function () {
+    return view('admin');
+})->name('admin');
+
+Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
+Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+
+
+Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+
+
+
 
 
