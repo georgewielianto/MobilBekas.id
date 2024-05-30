@@ -14,6 +14,10 @@
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
+                <div class="text-center mb-4">
+                    <h2>Welcome to MobilBekas.id!</h2>
+                    </div>
+                    
                 <div class="card">
                     <div class="card-header text-center">{{ __('Login') }}</div>
                     <div class="card-body">
@@ -51,6 +55,9 @@
                                 </a>
                             @endif
                         </form>
+                        <div class="text-center mt-3">
+                            <a href="{{ route('register') }}">{{ __("Don't have an account? Register") }}</a>
+                        </div>
                     </div>
                 </div>
             </div>

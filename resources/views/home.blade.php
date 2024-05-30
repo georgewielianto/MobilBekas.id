@@ -14,10 +14,16 @@
         <link href="css/styles.css" rel="stylesheet" />
     </head>
     <body>
+        
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="#!">MobilBekas.id</a>
+                <!-- Nama User -->
+                @if(Auth::check())
+                    <span class="navbar-text me-3">Hello, {{ Auth::user()->name }}!</span>
+                    @endif
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -33,6 +39,16 @@
                             </ul>
                         </li>
                     </ul>
+
+                   @if(Auth::check())
+                        <form class="d-flex align-items-center" action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button class="btn btn-outline-dark me-3" type="submit">
+                                Logout
+                            </button>
+                        </form>
+                    @endif
+
                     <form class="d-flex">
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>

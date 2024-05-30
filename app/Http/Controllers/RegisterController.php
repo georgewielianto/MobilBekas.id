@@ -27,7 +27,8 @@ class RegisterController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('/');
+        return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
+
     }
 
     protected function validator(array $data)
