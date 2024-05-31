@@ -16,7 +16,6 @@
 </head>
 
 <body>
-
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container px-4 px-lg-5">
@@ -43,27 +42,20 @@
                         </ul>
                     </li>
 
-
-
                     @if(Auth::user()->is_admin)
-                
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin') }}">Admin</a></li>
                     @endif
-
-
-
-
                 </ul>
 
                 @if(Auth::check())
-
                 <form class="d-flex align-items-center" action="{{ route('logout') }}" method="POST">
                     @csrf
-                    <button class="btn btn-outline-dark me-3" type="submit">
+                    <button class="btn btn-outline-dark me-3 btn-logout" type="submit">
                         Logout
                     </button>
                 </form>
                 @endif
+
 
                 <form class="d-flex">
                     <button class="btn btn-outline-dark" type="submit">
@@ -84,14 +76,10 @@
             </div>
         </div>
     </header>
-
-
-
     <!-- Section-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
                 @foreach($products as $product)
                 <div class="col mb-5">
                     <div class="card h-100">
@@ -108,32 +96,43 @@
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a>
-
+                            <div class="text-center">
+                                <a href="#" class="btn btn-outline-dark mt-auto btn-add-to-cart" data-url="{{ route('show', $product->id) }}">Add to cart</a>
                                 @if(Auth::user()->is_admin)
-                                <form action="{{ route('products.destroy', $product->id) }}" method="POST">
+                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-outline-danger mt-auto">Delete</button>
                                 </form>
-
                                 <a href="{{ route('products.edit', $product->id) }}" class="btn btn-outline-primary mt-auto">Edit</a>
-
                                 @endif
-
                             </div>
                         </div>
                     </div>
                 </div>
                 @endforeach
-
             </div>
         </div>
     </section>
-
-
-
-
+    <!-- Modal -->
+    <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addToCartModalLabel">Add to Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to add this product to the cart?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="confirmAddToCart">Add to Cart</button>
+                    <a href="#" class="btn btn-info" id="viewProduct">View Product</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container">
@@ -144,6 +143,33 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
+            const confirmAddToCartButton = document.getElementById('confirmAddToCart');
+            const viewProductButton = document.getElementById('viewProduct');
+            let currentProductUrl;
+
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    currentProductUrl = this.getAttribute('data-url');
+                    const productModal = new bootstrap.Modal(document.getElementById('addToCartModal'));
+                    productModal.show();
+                });
+            });
+
+            confirmAddToCartButton.addEventListener('click', function() {
+                alert('Product added to cart!');
+                const productModal = bootstrap.Modal.getInstance(document.getElementById('addToCartModal'));
+                productModal.hide();
+            });
+
+            viewProductButton.addEventListener('click', function() {
+                window.location.href = currentProductUrl;
+            });
+        });
+    </script>
 </body>
 
 </html>

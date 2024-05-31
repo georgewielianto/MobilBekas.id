@@ -10824,3 +10824,10 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+
+
+.btn-logout:hover {
+  background-color: red;
+  border-color: red;
+  color: white;
+}
