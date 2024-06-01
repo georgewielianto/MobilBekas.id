@@ -56,14 +56,10 @@
                 </form>
                 @endif
 
-
-                <form class="d-flex">
-                    <button class="btn btn-outline-dark" type="submit">
-                        <i class="bi-cart-fill me-1"></i>
-                        Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                    </button>
-                </form>
+                <a href="{{ url('/carts') }}" class="btn btn-outline-dark">
+                    <i class="bi-cart-fill me-1"></i>
+                    View Cart
+                </a>
             </div>
         </div>
     </nav>
@@ -91,13 +87,19 @@
                                 <!-- Product name-->
                                 <h5 class="fw-bolder">{{ $product->name }}</h5>
                                 <!-- Product price-->
-                                Rp{{ $product->price }}
+                                {{ formatRupiah($product->price) }}
+
                             </div>
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center">
-                                <a href="#" class="btn btn-outline-dark mt-auto btn-add-to-cart" data-url="{{ route('show', $product->id) }}">Add to cart</a>
+                                <form action="{{ route('addToCart', $product->id) }}" method="POST" class="add-to-cart-form">
+                                    @csrf
+                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                    <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
+                                </form>
+
                                 @if(Auth::user()->is_admin)
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline">
                                     @csrf
@@ -133,6 +135,24 @@
             </div>
         </div>
     </div>
+    <!-- Already Added to Cart Modal -->
+    <div class="modal fade" id="alreadyAddedModal" tabindex="-1" aria-labelledby="alreadyAddedModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alreadyAddedModalLabel">Product Already in Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    This product is already in your cart.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="{{ url('/carts') }}" class="btn btn-primary">View Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container">
@@ -143,30 +163,35 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
+    <!-- Custom JS to handle the add-to-cart logic -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
-            const confirmAddToCartButton = document.getElementById('confirmAddToCart');
-            const viewProductButton = document.getElementById('viewProduct');
-            let currentProductUrl;
+            const forms = document.querySelectorAll('.add-to-cart-form');
+            const alreadyAddedModal = new bootstrap.Modal(document.getElementById('alreadyAddedModal'));
 
-            addToCartButtons.forEach(button => {
-                button.addEventListener('click', function(event) {
+            forms.forEach(form => {
+                form.addEventListener('submit', function(event) {
                     event.preventDefault();
-                    currentProductUrl = this.getAttribute('data-url');
-                    const productModal = new bootstrap.Modal(document.getElementById('addToCartModal'));
-                    productModal.show();
+                    const productId = this.querySelector('input[name="product_id"]').value;
+
+                    fetch('{{ url("/carts/check") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ product_id: productId })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exists) {
+                            alreadyAddedModal.show();
+                        } else {
+                            this.submit();
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
                 });
-            });
-
-            confirmAddToCartButton.addEventListener('click', function() {
-                alert('Product added to cart!');
-                const productModal = bootstrap.Modal.getInstance(document.getElementById('addToCartModal'));
-                productModal.hide();
-            });
-
-            viewProductButton.addEventListener('click', function() {
-                window.location.href = currentProductUrl;
             });
         });
     </script>

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\ProductController;
 
+use App\Http\Controllers\CartController;
+
 
 
 
@@ -65,6 +67,19 @@ Route::post('/products', [ProductController::class, 'store'])->name('products.st
 Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('show');
+
+Route::post('/add-to-cart/{product}', [ProductController::class, 'addToCart'])->name('addToCart');
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
+    Route::patch('/carts/{cartItem}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/carts/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+});
+
+Route::post('/carts/check', [CartController::class, 'checkCart'])->name('cart.check');
+
 
 
 

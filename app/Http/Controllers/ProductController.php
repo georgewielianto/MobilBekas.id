@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Cart;
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -87,5 +90,31 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         return view('show', compact('product'));
+    }
+
+    public function addToCart(Request $request, Product $product)
+    {
+        // Anda mungkin perlu menambahkan validasi di sini sesuai kebutuhan
+
+        // Cek apakah produk sudah ada dalam keranjang
+        $existingCartItem = Cart::where('user_id', auth()->id())
+            ->where('product_id', $product->id)
+            ->first();
+
+        if ($existingCartItem) {
+            // Jika produk sudah ada, tambahkan jumlahnya
+            $existingCartItem->quantity += 1;
+            $existingCartItem->save();
+        } else {
+            // Jika produk belum ada, buat item baru dalam keranjang
+            Cart::create([
+                'user_id' => auth()->id(),
+                'product_id' => $product->id,
+                'quantity' => 1,
+            ]);
+        }
+
+        // Redirect atau kembalikan respons sesuai kebutuhan Anda
+        return redirect()->back()->with('success', 'Product added to cart successfully.');
     }
 }
