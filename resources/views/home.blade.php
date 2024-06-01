@@ -72,15 +72,19 @@
             </div>
         </div>
     </header>
-    <!-- Section-->
+
+    <!-- Section Cars-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="text-center mb-4">Cars</h2>
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
                 @foreach($products as $product)
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product image-->
                         <img class="card-img-top" src="{{ asset('images/' . $product->image) }}" alt="{{ $product->name }}" />
+
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -101,10 +105,10 @@
                                 </form>
 
                                 @if(Auth::user()->is_admin)
-                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline">
+                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="delete-form d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger mt-auto">Delete</button>
+                                    <button type="submit" class="btn btn-outline-danger mt-auto delete-button">Delete</button>
                                 </form>
                                 <a href="{{ route('products.edit', $product->id) }}" class="btn btn-outline-primary mt-auto">Edit</a>
                                 @endif
@@ -113,9 +117,85 @@
                     </div>
                 </div>
                 @endforeach
+
             </div>
         </div>
     </section>
+
+
+
+    <!-- Section Spare Parts-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="text-center mb-4">Spare Parts</h2>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+                @foreach($spareparts as $sparepart)
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="{{ asset('images/' . $sparepart->image) }}" alt="{{ $sparepart->name }}" />
+
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">{{ $sparepart->name }}</h5>
+                                <!-- Product price-->
+                                {{ formatRupiah($sparepart->price) }}
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+
+                            
+
+                            <form action="{{ route('addToCart', $sparepart->id) }}" method="POST" class="add-to-cart-form">
+    @csrf
+    <input type="hidden" name="product_id" value="{{ $sparepart->id }}">
+    <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
+</form>
+                                @if(Auth::user()->is_admin)
+                                <form action="{{ route('spareparts.destroy', $sparepart->id) }}" method="POST" class="delete-form d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-outline-danger mt-auto delete-button">Delete</button>
+                                </form>
+                                <a href="{{ route('edit_spare', $sparepart->id) }}" class="btn btn-outline-primary mt-auto">Edit</a>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Modal Success -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Success!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Spare part has been successfully deleted.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Modal -->
     <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -166,6 +246,7 @@
     <!-- Custom JS to handle the add-to-cart logic -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
             const forms = document.querySelectorAll('.add-to-cart-form');
             const alreadyAddedModal = new bootstrap.Modal(document.getElementById('alreadyAddedModal'));
 
@@ -174,27 +255,46 @@
                     event.preventDefault();
                     const productId = this.querySelector('input[name="product_id"]').value;
 
-                    fetch('{{ url("/carts/check") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({ product_id: productId })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.exists) {
-                            alreadyAddedModal.show();
-                        } else {
-                            this.submit();
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
+                    fetch('{{ route("carts.check") }}', { // Ubah URL ke route yang sesuai
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                product_id: productId
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.exists) {
+                                alreadyAddedModal.show();
+                            } else {
+                                this.submit();
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+
+            const deleteButtons = document.querySelectorAll('.delete-button');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const confirmation = confirm('Are you sure you want to delete this item?');
+                    if (confirmation) {
+                        this.closest('form').submit();
+                    }
                 });
             });
         });
     </script>
+
 </body>
 
 </html>

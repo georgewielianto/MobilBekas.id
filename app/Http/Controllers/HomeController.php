@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
+use App\Models\Sparepart;
+
 
 class HomeController extends Controller
 {
@@ -12,8 +14,9 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $products = Product::all(); 
+        $spareparts = Sparepart::all(); 
         
-        return view('home', compact('user', 'products'));
+        return view('home', compact('user', 'products','spareparts'));
     }
 
     public function upload(Request $request)

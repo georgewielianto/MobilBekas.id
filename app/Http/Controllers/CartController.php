@@ -17,18 +17,19 @@ class CartController extends Controller
     }
 
     public function update(Request $request, Cart $cartItem)
-    {
-        // Validate the new quantity
-        $request->validate([
-            'quantity' => 'required|integer|min=1'
-        ]);
+{
+    // Validate the new quantity
+    $validatedData = $request->validate([
+        'quantity' => 'required|integer|min:1'
+    ]);
 
-        // Update the cart item quantity
-        $cartItem->quantity = $request->quantity;
-        $cartItem->save();
+    // Update the cart item quantity
+    $cartItem->quantity = $validatedData['quantity'];
+    $cartItem->save();
 
-        return redirect()->route('carts.index')->with('success', 'Cart updated successfully.');
-    }
+    return redirect()->route('carts.index')->with('success', 'Cart updated successfully.');
+}
+
 
     public function remove(Cart $cartItem)
     {
@@ -46,14 +47,21 @@ class CartController extends Controller
         return redirect()->route('carts.index')->with('success', 'Proceed to checkout (functionality to be implemented).');
     }
 
-    public function checkCart(Request $request)
+    public function check(Request $request)
 {
-    $product_id = $request->product_id;
-    $exists = Cart::where('user_id', auth()->id())
-                  ->where('product_id', $product_id)
-                  ->exists();
+    // Lakukan logika untuk memeriksa apakah produk sudah ada di keranjang belanja
 
-    return response()->json(['exists' => $exists]);
+    // Misalnya, Anda bisa menggunakan kode berikut untuk mencari item di keranjang berdasarkan product_id
+    $existingCartItem = Cart::where('user_id', auth()->id())
+        ->where('product_id', $request->product_id)
+        ->first();
+
+    // Kemudian Anda bisa mengembalikan respons dalam bentuk JSON
+    return response()->json(['exists' => !!$existingCartItem]);
 }
+
+
+
+
 
 }

@@ -20,4 +20,10 @@ class Cart extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function sparePart()
+    {
+        return $this->belongsTo(SparePart::class);
+    }
+
+
 }
