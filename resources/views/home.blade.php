@@ -149,13 +149,14 @@
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center">
 
-                            
 
-                            <form action="{{ route('addToCart', $sparepart->id) }}" method="POST" class="add-to-cart-form">
+
+                            <form action="{{ route('addToCartSparepart', $sparepart->id) }}" method="POST" class="add-to-cart-form-spare">
     @csrf
-    <input type="hidden" name="product_id" value="{{ $sparepart->id }}">
+    <input type="hidden" name="sparepart_id" value="{{ $sparepart->id }}">
     <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
 </form>
+
                                 @if(Auth::user()->is_admin)
                                 <form action="{{ route('spareparts.destroy', $sparepart->id) }}" method="POST" class="delete-form d-inline">
                                     @csrf
@@ -174,6 +175,43 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal Already Added -->
+    <div class="modal fade" id="alreadyAddedModal" tabindex="-1" aria-labelledby="alreadyAddedModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alreadyAddedModalLabel">Already Added!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    This item is already added to the cart.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Already Added Spare-->
+    <div class="modal fade" id="alreadyAddedModalSpare" tabindex="-1" aria-labelledby="alreadyAddedModalSpareLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="alreadyAddedModalSpareLabel">Already Added!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    This item is already added to the cart.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -196,43 +234,7 @@
     </div>
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addToCartModalLabel">Add to Cart</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to add this product to the cart?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="confirmAddToCart">Add to Cart</button>
-                    <a href="#" class="btn btn-info" id="viewProduct">View Product</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Already Added to Cart Modal -->
-    <div class="modal fade" id="alreadyAddedModal" tabindex="-1" aria-labelledby="alreadyAddedModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="alreadyAddedModalLabel">Product Already in Cart</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    This product is already in your cart.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <a href="{{ url('/carts') }}" class="btn btn-primary">View Cart</a>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container">
@@ -244,56 +246,95 @@
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
     <!-- Custom JS to handle the add-to-cart logic -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
+    
+        <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const forms = document.querySelectorAll('.add-to-cart-form');
+        const alreadyAddedModal = new bootstrap.Modal(document.getElementById('alreadyAddedModal'));
 
-            const forms = document.querySelectorAll('.add-to-cart-form');
-            const alreadyAddedModal = new bootstrap.Modal(document.getElementById('alreadyAddedModal'));
+        const formsSpare = document.querySelectorAll('.add-to-cart-form-spare');
+    const alreadyAddedModalSpare = new bootstrap.Modal(document.getElementById('alreadyAddedModalSpare'));
 
-            forms.forEach(form => {
-                form.addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    const productId = this.querySelector('input[name="product_id"]').value;
 
-                    fetch('{{ route("carts.check") }}', { // Ubah URL ke route yang sesuai
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                product_id: productId
-                            })
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.exists) {
-                                alreadyAddedModal.show();
-                            } else {
-                                this.submit();
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
-                });
-            });
+        forms.forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const productId = this.querySelector('input[name="product_id"]').value;
 
-            const deleteButtons = document.querySelectorAll('.delete-button');
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const confirmation = confirm('Are you sure you want to delete this item?');
-                    if (confirmation) {
-                        this.closest('form').submit();
+                fetch('{{ route("carts.check") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        product_id: productId
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
                     }
-                });
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.exists) {
+                        alreadyAddedModal.show();
+                    } else {
+                        this.submit();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
             });
         });
-    </script>
+
+        formsSpare.forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const sparepartId = this.querySelector('input[name="sparepart_id"]').value;
+
+            fetch('{{ route("carts.check_spare") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    sparepart_id: sparepartId
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.exists) {
+                    alreadyAddedModalSpare.show();
+                } else {
+                    this.submit();
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+
+        const deleteButtons = document.querySelectorAll('.delete-button');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const confirmation = confirm('Are you sure you want to delete this item?');
+                if (confirmation) {
+                    this.closest('form').submit();
+                }
+            });
+        });
+    });
+</script>
+
+
+    
 
 </body>
 

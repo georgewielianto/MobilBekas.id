@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SparePart;
 use Illuminate\Http\Request;
-use App\Models\Cart; 
+use App\Models\Cart_spare; 
 
 class SparePartController extends Controller
 {
@@ -69,31 +69,34 @@ class SparePartController extends Controller
         return redirect()->route('home')->with('success', 'Spare part updated successfully');
     }
 
-    public function addToCart(Request $request, SparePart $sparepart)
-    {
-        // Anda mungkin perlu menambahkan validasi di sini sesuai kebutuhan
-
-        // Cek apakah produk sudah ada dalam keranjang
-        $existingCartItem = Cart::where('user_id', auth()->id())
-            ->where('sparepart_id', $sparepart->id)
-            ->first();
-
-        if ($existingCartItem) {
-            // Jika produk sudah ada, tambahkan jumlahnya
-            $existingCartItem->quantity += 1;
-            $existingCartItem->save();
-        } else {
-            // Jika produk belum ada, buat item baru dalam keranjang
-            Cart::create([
-                'user_id' => auth()->id(),
-                'product_id' => $sparepart->id,
-                'quantity' => 1,
-            ]);
-        }
-
-        // Redirect atau kembalikan respons sesuai kebutuhan Anda
-        return redirect()->back()->with('success', 'Product added to cart successfully.');
+    public function addToCart(Request $request, Sparepart $sparepart)
+{
+    // Ensure the user is authenticated
+    if (!auth()->check()) {
+        return redirect()->route('login')->with('error', 'You need to be logged in to add items to the cart.');
     }
+
+    // Check if the spare part is already in the cart
+    $existingCartItem = Cart_spare::where('user_id', auth()->id())
+        ->where('sparepart_id', $sparepart->id)
+        ->first();
+
+    if ($existingCartItem) {
+        // If it exists, increase the quantity
+        $existingCartItem->quantity += 1;
+        $existingCartItem->save();
+    } else {
+        // If it does not exist, create a new cart item
+        Cart_spare::create([
+            'user_id' => auth()->id(),
+            'sparepart_id' => $sparepart->id,
+            'quantity' => 1,
+        ]);
+    }
+
+    // Redirect back with a success message
+    return redirect()->route('home')->with('success', 'Product added to cart successfully.');
+}
 
    
 

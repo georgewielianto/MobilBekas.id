@@ -9,8 +9,16 @@
 </head>
 
 <body>
+    <div class="container mt-5 text-center">
+        <h1 class="mb-4">Your Carts</h1>
+        <p class="mb-4">MobilBekas.id</p>
+    </div>
+
     <div class="container mt-5">
-        <h1 class="mb-4">Your Cart</h1>
+
+
+
+        <h1 class="mb-4">Car</h1>
         @if($cartItems->isEmpty())
         <p>Your cart is empty.</p>
         @else
@@ -60,9 +68,77 @@
             </tbody>
         </table>
         <a href="{{ route('checkout') }}" class="btn btn-success">Proceed to Checkout</a>
-        <a href="{{ route('home') }}" class="btn btn-primary">Back to Home</a> <!-- Tambahkan ini -->
         @endif
     </div>
+
+
+
+
+    <!-- cart untuk sparepart -->
+    <div class="container mt-5">
+        <h1 class="mb-4">Sparepart</h1>
+        @if($cartSpareparts->isEmpty())
+        <p>Your cart is empty.</p>
+        @else
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php $totalPrice = 0; @endphp
+                @foreach($cartSpareparts as $cartSparepart)
+                @php $itemTotal = $cartSparepart->sparepart->price * $cartSparepart->quantity; @endphp
+                @php $totalPrice += $itemTotal; @endphp
+                <tr>
+                    <td><img src="{{ asset('images/' . $cartSparepart->sparepart->image) }}" alt="{{ $cartSparepart->sparepart->name }}" width="100"></td>
+                    <td>{{ $cartSparepart->sparepart->name }}</td>
+                    <td>Rp{{ number_format($cartSparepart->sparepart->price, 0, ',', '.') }}</td>
+                    <td>
+                        <form action="{{ route('spareparts.cart.update', $cartSparepart->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('PATCH')
+                            <input type="number" name="quantity" value="{{ $cartSparepart->quantity }}" min="1" class="form-control d-inline w-50">
+                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                        </form>
+                    </td>
+                    <td>Rp{{ number_format($itemTotal, 0, ',', '.') }}</td>
+                    <td>
+                        <form action="{{ route('spareparts.cart.remove', $cartSparepart->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+                <tr>
+                    <td colspan="4" class="text-end"><strong>Total</strong></td>
+                    <td colspan="2"><strong>Rp{{ number_format($totalPrice, 0, ',', '.') }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="{{ route('checkout') }}" class="btn btn-success">Proceed to Checkout</a>
+        @endif
+    </div>
+
+    <div class="container mt-5 text-center">
+            <a href="{{ route('home') }}" class="btn btn-primary">Back to Home</a>
+        </div>
+
+        <div class="container mt-5">
+    <h2>Total Price</h2>
+    <p>Rp{{ number_format($totalPriceAll, 0, ',', '.') }}</p>
+</div>
+
+
+
 
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -15,6 +15,7 @@ use App\Http\Controllers\CartController;
 
 use App\Http\Controllers\SparePartController;
 
+use App\Http\Controllers\Cart_spareController;
 
 
 
@@ -71,7 +72,14 @@ Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name
 Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('show');
 
-Route::post('/add-to-cart/{product}', [ProductController::class, 'addToCart'])->name('addToCart');
+Route::post('/cart/add/{product}', [ProductController::class, 'addToCart'])->name('addToCart');
+
+Route::post('/cart/add-sparepart/{sparepart}', [SparePartController::class, 'addToCart'])->name('addToCartSparepart');
+
+
+
+
+
 
 
 
@@ -81,11 +89,23 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/carts/{cartItem}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/carts/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
     Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+
+    // Routes for spare parts
+    Route::get('/spareparts/carts', [Cart_SpareController::class, 'index'])->name('spareparts.carts.index');
+    Route::patch('/spareparts/carts/{cartSparepart}', [Cart_SpareController::class, 'update'])->name('spareparts.cart.update');
+    Route::delete('/spareparts/carts/{cartSparepart}', [Cart_SpareController::class, 'remove'])->name('spareparts.cart.remove');
+    Route::get('/spareparts/checkout', [Cart_SpareController::class, 'checkout'])->name('spareparts.checkout');
 });
 
 
 
+
+
 Route::post('/carts/check', [CartController::class, 'check'])->name('carts.check');
+
+Route::post('/carts/check_spare', [Cart_spareController::class, 'check_spare'])->name('carts.check_spare');
+
+
 
 
 Route::patch('/cart/{cartItem}', 'App\Http\Controllers\CartController@update')->name('cart.update');
