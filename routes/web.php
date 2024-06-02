@@ -131,6 +131,12 @@ Route::delete('/products/{product}', [ProductController::class, 'destroy'])->nam
 
 
 
+//search
+Route::get('/search', [ProductController::class, 'search'])->name('search');
+
+Route::get('/search', [SparePartController::class, 'search'])->name('search');
+
+
 
 
 

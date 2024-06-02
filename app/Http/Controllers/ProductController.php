@@ -148,5 +148,17 @@ public function destroy(Product $product)
     return redirect()->route('home')->with('success', 'Product deleted successfully.');
 }
 
+public function search(Request $request)
+{
+    $query = $request->input('query');
+    
+    // Lakukan pencarian produk berdasarkan nama
+    $products = Product::where('name', 'like', "%$query%")->get();
+
+    // Kirim hasil pencarian ke tampilan
+    return view('search-results', compact('products'));
+}
+
+
 
 }

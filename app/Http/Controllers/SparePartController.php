@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SparePart;
 use Illuminate\Http\Request;
 use App\Models\Cart_spare; 
+use App\Models\Product;
 
 class SparePartController extends Controller
 {
@@ -98,7 +99,19 @@ class SparePartController extends Controller
     return redirect()->route('home')->with('success', 'Product added to cart successfully.');
 }
 
-   
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    // Lakukan pencarian produk dan suku cadang
+    $products = Product::where('name', 'like', "%$query%")->get();
+    $spareparts = SparePart::where('name', 'like', "%$query%")->get();
+
+    // Kirim hasil pencarian ke tampilan
+    return view('search-results', compact('products', 'spareparts'));
+}
+
+
 
    
 }

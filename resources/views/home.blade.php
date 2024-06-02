@@ -28,7 +28,10 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
+                    </li>
+
                     <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
@@ -41,6 +44,11 @@
                             <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
                         </ul>
                     </li>
+
+                    <form action="{{ route('search') }}" method="GET" class="d-flex">
+                        <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
 
                     @if(Auth::user()->is_admin)
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin') }}">Admin</a></li>
@@ -151,11 +159,11 @@
 
 
 
-                            <form action="{{ route('addToCartSparepart', $sparepart->id) }}" method="POST" class="add-to-cart-form-spare">
-    @csrf
-    <input type="hidden" name="sparepart_id" value="{{ $sparepart->id }}">
-    <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
-</form>
+                                <form action="{{ route('addToCartSparepart', $sparepart->id) }}" method="POST" class="add-to-cart-form-spare">
+                                    @csrf
+                                    <input type="hidden" name="sparepart_id" value="{{ $sparepart->id }}">
+                                    <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
+                                </form>
 
                                 @if(Auth::user()->is_admin)
                                 <form action="{{ route('spareparts.destroy', $sparepart->id) }}" method="POST" class="delete-form d-inline">
@@ -246,95 +254,95 @@
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
     <!-- Custom JS to handle the add-to-cart logic -->
-    
-        <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const forms = document.querySelectorAll('.add-to-cart-form');
-        const alreadyAddedModal = new bootstrap.Modal(document.getElementById('alreadyAddedModal'));
 
-        const formsSpare = document.querySelectorAll('.add-to-cart-form-spare');
-    const alreadyAddedModalSpare = new bootstrap.Modal(document.getElementById('alreadyAddedModalSpare'));
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('.add-to-cart-form');
+            const alreadyAddedModal = new bootstrap.Modal(document.getElementById('alreadyAddedModal'));
+
+            const formsSpare = document.querySelectorAll('.add-to-cart-form-spare');
+            const alreadyAddedModalSpare = new bootstrap.Modal(document.getElementById('alreadyAddedModalSpare'));
 
 
-        forms.forEach(form => {
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                const productId = this.querySelector('input[name="product_id"]').value;
+            forms.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const productId = this.querySelector('input[name="product_id"]').value;
 
-                fetch('{{ route("carts.check") }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        product_id: productId
-                    })
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                    fetch('{{ route("carts.check") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                product_id: productId
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.exists) {
+                                alreadyAddedModal.show();
+                            } else {
+                                this.submit();
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+
+            formsSpare.forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const sparepartId = this.querySelector('input[name="sparepart_id"]').value;
+
+                    fetch('{{ route("carts.check_spare") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                sparepart_id: sparepartId
+                            })
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.exists) {
+                                alreadyAddedModalSpare.show();
+                            } else {
+                                this.submit();
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            });
+
+            const deleteButtons = document.querySelectorAll('.delete-button');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const confirmation = confirm('Are you sure you want to delete this item?');
+                    if (confirmation) {
+                        this.closest('form').submit();
                     }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.exists) {
-                        alreadyAddedModal.show();
-                    } else {
-                        this.submit();
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+                });
             });
         });
-
-        formsSpare.forEach(form => {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const sparepartId = this.querySelector('input[name="sparepart_id"]').value;
-
-            fetch('{{ route("carts.check_spare") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({
-                    sparepart_id: sparepartId
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.exists) {
-                    alreadyAddedModalSpare.show();
-                } else {
-                    this.submit();
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    });
-
-        const deleteButtons = document.querySelectorAll('.delete-button');
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', function(event) {
-                event.preventDefault();
-                const confirmation = confirm('Are you sure you want to delete this item?');
-                if (confirmation) {
-                    this.closest('form').submit();
-                }
-            });
-        });
-    });
-</script>
+    </script>
 
 
-    
+
 
 </body>
 
