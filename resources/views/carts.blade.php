@@ -6,6 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh; /* Make sure the body stretches at least to the height of the viewport */
+            position: relative;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #343a40;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-placeholder {
+            height: 60px;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -137,16 +166,16 @@
     <p>Rp{{ number_format($totalPriceAll, 0, ',', '.') }}</p>
 </div>
 
-
- <!-- Footer-->
- <footer class="py-5 bg-dark">
+<footer class="py-5 bg-dark">
         <div class="container">
             <p class="m-0 text-center text-white">Copyright &copy; MobilBekas.id 2024</p>
         </div>
     </footer>
 
+
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

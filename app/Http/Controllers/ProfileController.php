@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\User; 
 
 class ProfileController extends Controller
 {
@@ -23,25 +23,32 @@ class ProfileController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
-
+    
         if ($validator->fails()) {
-            return redirect()->route('profile.index')
+            return redirect()->route('profile')
                              ->withErrors($validator)
                              ->withInput();
         }
-
+    
         // Get the authenticated user
         $user = Auth::user();
-
+    
+        // Check if the input name is already taken
+        $existingUser = User::where('name', $request->input('name'))->where('id', '!=', $user->id)->first();
+    
+        if ($existingUser) {
+            return redirect()->route('profile')->withInput()->withErrors(['name' => 'The username has already been taken. Please pick another username.']);
+        }
+    
         // Update the user's profile
         $user->name = $request->input('name');
-
+    
         if ($request->filled('password')) {
             $user->password = Hash::make($request->input('password'));
         }
-
+    
         $user->save();
-
+    
         // Redirect back with a success message
         return redirect()->route('profile')->with('status', 'Profile updated successfully.');
     }
@@ -63,5 +70,4 @@ class ProfileController extends Controller
             return redirect()->route('login')->with('status', 'Your account has been deleted.');
         }
     }
-    
 }

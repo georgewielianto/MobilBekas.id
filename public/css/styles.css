@@ -10831,3 +10831,9 @@ textarea.form-control-lg {
   border-color: red;
   color: white;
 }
+.dropdown-item:hover {
+  background-color: transparent !important;
+}
+.logout-link:hover {
+  color: #dc3545 !important;
+}
