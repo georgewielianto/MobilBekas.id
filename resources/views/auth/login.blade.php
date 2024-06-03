@@ -38,7 +38,10 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="password">{{ __('Password') }}</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <button type="button" class="btn btn-outline-secondary toggle-password" onclick="togglePassword('password')">👁️</button>
+                                </div>
                             </div>
                             <div class="form-group mb-3">
                                 <div class="form-check">
@@ -63,6 +66,20 @@
             </div>
         </div>
     </div>
+
+    <script>
+    function togglePassword(inputId) {
+        var input = document.getElementById(inputId);
+        var button = document.querySelector('[onclick="togglePassword(\'' + inputId + '\')"]');
+        if (input.type === "password") {
+            input.type = "text";
+            button.innerHTML = "👁️";
+        } else {
+            input.type = "password";
+            button.innerHTML = "👁️";
+        }
+    }
+</script>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -20,9 +20,25 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container px-4 px-lg-5">
             <a class="navbar-brand" href="#!">MobilBekas.id</a>
-            <!-- Nama User -->
+
             @if(Auth::check())
-            <span class="navbar-text me-3">Hello, {{ Auth::user()->name }}!</span>
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Hello, {{ Auth::user()->name }} !
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            @csrf
+                            <button type="submit" class="dropdown-item">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
             @endif
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -31,7 +47,6 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
                     </li>
-
                     <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
@@ -44,24 +59,16 @@
                             <li><a class="dropdown-item" href="#!">SpareParts</a></li>
                         </ul>
                     </li>
-
-                    <form action="{{ route('search') }}" method="GET" class="d-flex">
-                        <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
-                    </form>
-
-                    @if(Auth::user()->is_admin)
-                    <li class="nav-item"><a class="nav-link" href="{{ route('admin') }}">Admin</a></li>
-                    @endif
                 </ul>
-
-                @if(Auth::check())
-                <form class="d-flex align-items-center" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button class="btn btn-outline-dark me-3 btn-logout" type="submit">
-                        Logout
-                    </button>
+                <form action="{{ route('search') }}" method="GET" class="d-flex me-auto">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
+
+
+
+                @if(Auth::user() && Auth::user()->is_admin)
+                <a class="nav-link" href="{{ route('admin') }}">Admin</a>
                 @endif
 
                 <a href="{{ url('/carts') }}" class="btn btn-outline-dark">
@@ -76,7 +83,7 @@
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
                 <h1 class="display-4 fw-bolder">Shop in style</h1>
-                <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+                <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
             </div>
         </div>
     </header>
@@ -130,8 +137,6 @@
         </div>
     </section>
 
-
-
     <!-- Section Spare Parts-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
@@ -156,9 +161,6 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center">
-
-
-
                                 <form action="{{ route('addToCartSparepart', $sparepart->id) }}" method="POST" class="add-to-cart-form-spare">
                                     @csrf
                                     <input type="hidden" name="sparepart_id" value="{{ $sparepart->id }}">
@@ -179,23 +181,44 @@
                 </div>
                 @endforeach
 
-
             </div>
         </div>
     </section>
+
+
+
+
+    <!-- Modal Added to Cart -->
+    <div class="modal fade" id="addedToCartModal" tabindex="-1" aria-labelledby="addedToCartModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addedToCartModalLabel">Added to Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    The item has been added to your cart.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Modal Already Added -->
     <div class="modal fade" id="alreadyAddedModal" tabindex="-1" aria-labelledby="alreadyAddedModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title" id="alreadyAddedModalLabel">Already Added!</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body bg-danger text-white">
                     This item is already added to the cart.
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer bg-danger">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -206,14 +229,14 @@
     <div class="modal fade" id="alreadyAddedModalSpare" tabindex="-1" aria-labelledby="alreadyAddedModalSpareLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title" id="alreadyAddedModalSpareLabel">Already Added!</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body bg-danger text-white">
                     This item is already added to the cart.
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer bg-danger">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -259,6 +282,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const forms = document.querySelectorAll('.add-to-cart-form');
             const alreadyAddedModal = new bootstrap.Modal(document.getElementById('alreadyAddedModal'));
+            const addedToCartModal = new bootstrap.Modal(document.getElementById('addedToCartModal'));
 
             const formsSpare = document.querySelectorAll('.add-to-cart-form-spare');
             const alreadyAddedModalSpare = new bootstrap.Modal(document.getElementById('alreadyAddedModalSpare'));
@@ -289,7 +313,19 @@
                             if (data.exists) {
                                 alreadyAddedModal.show();
                             } else {
-                                this.submit();
+                                fetch(this.action, {
+                                    method: this.method,
+                                    body: new FormData(this),
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    }
+                                }).then(response => {
+                                    if (response.ok) {
+                                        addedToCartModal.show();
+                                    } else {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                }).catch(error => console.error('Error:', error));
                             }
                         })
                         .catch(error => console.error('Error:', error));
@@ -321,7 +357,19 @@
                             if (data.exists) {
                                 alreadyAddedModalSpare.show();
                             } else {
-                                this.submit();
+                                fetch(this.action, {
+                                    method: this.method,
+                                    body: new FormData(this),
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    }
+                                }).then(response => {
+                                    if (response.ok) {
+                                        addedToCartModal.show();
+                                    } else {
+                                        throw new Error('Network response was not ok');
+                                    }
+                                }).catch(error => console.error('Error:', error));
                             }
                         })
                         .catch(error => console.error('Error:', error));
@@ -340,6 +388,7 @@
             });
         });
     </script>
+
 
 
 
