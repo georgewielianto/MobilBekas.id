@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Cart_spare;
+use App\Models\Checkout;
 
 class CartController extends Controller
 {
@@ -43,10 +44,36 @@ class CartController extends Controller
 
     public function checkout()
     {
-        // Implement checkout logic here
-        // This could include creating an order, processing payment, etc.
+        $userId = auth()->id();
+        
+        // Retrieve cart items for the user
+        $cartItems = Cart::where('user_id', $userId)->with('product')->get();
+        $cartSpareparts = Cart_spare::where('user_id', $userId)->with('sparepart')->get();
 
-        return redirect()->route('carts.index')->with('success', 'Proceed to checkout (functionality to be implemented).');
+        // Save checkout information
+        foreach ($cartItems as $cartItem) {
+            Checkout::create([
+                'user_id' => $userId,
+                'product_name' => $cartItem->product->name,
+                'category' => 'car'
+            ]);
+        }
+
+        foreach ($cartSpareparts as $cartSparepart) {
+            Checkout::create([
+                'user_id' => $userId,
+                'product_name' => $cartSparepart->sparepart->name,
+                'category' => 'sparepart'
+            ]);
+        }
+
+        // Clear the cart for the user
+        Cart::where('user_id', $userId)->delete();
+        Cart_spare::where('user_id', $userId)->delete();
+
+        // Redirect to the home page with a success message
+        return redirect()->route('home')->with('success', 'Checkout completed successfully!');
+
     }
 
     public function check(Request $request)

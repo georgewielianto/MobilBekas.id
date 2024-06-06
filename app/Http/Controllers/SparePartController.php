@@ -9,6 +9,7 @@ use App\Models\Product;
 
 class SparePartController extends Controller
 {
+    
     public function destroy($id)
     {
         $sparepart = SparePart::find($id);

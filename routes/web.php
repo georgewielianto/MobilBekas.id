@@ -19,6 +19,9 @@ use App\Http\Controllers\Cart_spareController;
 
 use App\Http\Controllers\ProfileController;
 
+use App\Http\Controllers\AdminController;
+
+
 
 
 
@@ -145,4 +148,9 @@ Route::delete('/profile/destroy', [ProfileController::class, 'destroy'])->name('
 
 
 
+Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+Route::delete('/admin/checkout/{id}', [AdminController::class, 'destroy'])->name('checkout.destroy');
 
+
+
+Route::get('/clear-sorting', [ProductController::class, 'clearSorting'])->name('clearSorting');

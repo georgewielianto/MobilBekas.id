@@ -17,7 +17,7 @@
 </head>
 
 <body>
-  
+    <div class="container">
         <h1>Profile Page</h1>
         <p>Welcome to your profile page, {{ Auth::user()->name }}.</p>
 
@@ -26,7 +26,7 @@
             @method('PUT')
 
             <div>
-                <label for="name">Name:</label>
+                <label for="name"> Your Name:</label>
                 <input type="text" id="name" name="name" value="{{ Auth::user()->name }}">
             </div>
 
@@ -51,39 +51,38 @@
             <button type="submit">Delete Account</button>
         </form>
 
+        <button><a href="{{ route('home') }}">Home</a></button>
+    </div>
 
-        <button><a href="{{ route('home') }}">Home</a> </button>
+    <!-- Footer -->
+    <footer>
+        <div class="container-footer">
+            <p class="m-0 text-center">Copyright &copy; MobilBekas.id 2024</p>
+        </div>
+    </footer>
 
-        <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container">
-                <p class="m-0 text-center text-white">Copyright &copy; MobilBekas.id 2024</p>
-            </div>
-        </footer>
+    <script>
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("password_confirmation").value;
 
-        <script>
-            function validateForm() {
-                var password = document.getElementById("password").value;
-                var confirmPassword = document.getElementById("password_confirmation").value;
-
-                if (password.length > 0 && password.length < 8) {
-                    alert("The password field must be at least 8 characters.");
-                    return false;
-                }
-
-                if (password !== confirmPassword) {
-                    alert("New password didn't match.");
-                    return false;
-                }
-                return true;
+            if (password.length > 0 && password.length < 8) {
+                alert("The password field must be at least 8 characters.");
+                return false;
             }
 
-            function togglePassword(inputId) {
-                var input = document.getElementById(inputId);
-                input.type = input.type === "password" ? "text" : "password";
+            if (password !== confirmPassword) {
+                alert("New password didn't match.");
+                return false;
             }
-        </script>
-    
+            return true;
+        }
+
+        function togglePassword(inputId) {
+            var input = document.getElementById(inputId);
+            input.type = input.type === "password" ? "text" : "password";
+        }
+    </script>
 </body>
 
 </html>

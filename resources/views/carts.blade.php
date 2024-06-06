@@ -11,7 +11,7 @@
         body {
             margin: 0;
             padding: 0;
-            min-height: 100vh; /* Make sure the body stretches at least to the height of the viewport */
+            min-height: 100vh;
             position: relative;
         }
 
@@ -21,20 +21,14 @@
         }
 
         footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #343a40;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-        }
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
 
-        .footer-placeholder {
-            height: 60px;
-        }
+
+       
     </style>
-
 </head>
 
 <body>
@@ -44,9 +38,6 @@
     </div>
 
     <div class="container mt-5">
-
-
-
         <h1 class="mb-4">Car</h1>
         @if($cartItems->isEmpty())
         <p>Your cart is empty.</p>
@@ -78,7 +69,6 @@
                             <input type="number" name="quantity" value="{{ $cartItem->quantity }}" min="1" class="form-control d-inline w-50">
                             <button type="submit" class="btn btn-sm btn-primary">Update</button>
                         </form>
-
                     </td>
                     <td>Rp{{ number_format($itemTotal, 0, ',', '.') }}</td>
                     <td>
@@ -96,14 +86,9 @@
                 </tr>
             </tbody>
         </table>
-        <a href="{{ route('checkout') }}" class="btn btn-success">Proceed to Checkout</a>
         @endif
     </div>
 
-
-
-
-    <!-- cart untuk sparepart -->
     <div class="container mt-5">
         <h1 class="mb-4">Sparepart</h1>
         @if($cartSpareparts->isEmpty())
@@ -153,18 +138,18 @@
                 </tr>
             </tbody>
         </table>
-        <a href="{{ route('checkout') }}" class="btn btn-success">Proceed to Checkout</a>
         @endif
     </div>
 
-    <div class="container mt-5 text-center">
-            <a href="{{ route('home') }}" class="btn btn-primary">Back to Home</a>
-        </div>
+    <div class="container mt-5">
+        <h2>Total Price</h2>
+        <p>Rp{{ number_format($totalPriceAll, 0, ',', '.') }}</p>
+    </div>
 
-        <div class="container mt-5">
-    <h2>Total Price</h2>
-    <p>Rp{{ number_format($totalPriceAll, 0, ',', '.') }}</p>
-</div>
+    <div class="container mt-5 text-center">
+        <a href="{{ route('checkout') }}" class="btn btn-success btn-proceed">Proceed to Checkout</a>
+        <a href="{{ route('home') }}" class="btn btn-primary btn-back">Back to Home</a>
+    </div>
 
 <footer class="py-5 bg-dark">
         <div class="container">
@@ -173,9 +158,20 @@
     </footer>
 
 
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
+ 
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            var successMessage = "{{ session('success') }}";
+            if (successMessage) {
+                alert(successMessage);
+            }
+        });
+    </script>
 </body>
 
 </html>

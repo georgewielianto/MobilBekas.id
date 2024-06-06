@@ -68,14 +68,21 @@
 
 
 
-                @if(Auth::user() && Auth::user()->is_admin)
-                <a class="nav-link" href="{{ route('admin') }}">Admin</a>
-                @endif
+                <div class="d-flex">
+                    @if(Auth::user() && Auth::user()->is_admin)
+                    <a href="{{ route('admin') }}" class="btn btn-secondary me-2">Admin Page</a>
+                    @endif
 
-                <a href="{{ url('/carts') }}" class="btn btn-outline-dark">
-                    <i class="bi-cart-fill me-1"></i>
-                    View Cart
-                </a>
+                    <a href="{{ url('/carts') }}" class="btn btn-outline-dark">
+                        <i class="bi-cart-fill me-1"></i>
+                        View Cart
+                    </a>
+
+                   
+
+
+
+                </div>
             </div>
         </div>
     </nav>
@@ -94,6 +101,9 @@
         <div class="container px-4 px-lg-5 mt-5">
             <h2 class="text-center mb-4">Cars</h2>
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+
+
 
                 @foreach($products as $product)
                 <div class="col mb-5">
