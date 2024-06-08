@@ -115,6 +115,7 @@
                             <div class="text-center">
                                 <!-- Product name-->
                                 <h5 class="fw-bolder">{{ $product->name }}</h5>
+                                <p>{{ $product->description }}</p>
                                 <!-- Product price-->
                                 {{ formatRupiah($product->price) }}
                             </div>
@@ -165,6 +166,7 @@
                             <div class="text-center">
                                 <!-- Product name-->
                                 <h5 class="fw-bolder">{{ $sparepart->name }}</h5>
+                                <p>{{ $sparepart->description }}</p>
                                 <!-- Product price-->
                                 {{ formatRupiah($sparepart->price) }}
                             </div>

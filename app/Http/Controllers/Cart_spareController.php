@@ -43,8 +43,6 @@ class Cart_spareController extends Controller
 
     public function checkout()
     {
-        // Implement checkout logic here
-        // This could include creating an order, processing payment, etc.
 
         return redirect()->route('carts.index')->with('success', 'Proceed to checkout (functionality to be implemented).');
     }

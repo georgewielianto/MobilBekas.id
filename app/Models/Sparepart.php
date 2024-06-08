@@ -13,5 +13,6 @@ class Sparepart extends Model
         'name',
         'image',
         'price',
+        'description',
     ];
 }

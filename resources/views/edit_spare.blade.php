@@ -28,6 +28,11 @@
                 <label for="name" class="form-label">Product Name</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ $sparepart->name }}" required>
             </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">SpareParts Description</label>
+                <textarea class="form-control" id="description" name="description" required></textarea>
+            </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Product Image</label>
                 <input type="file" class="form-control" id="image" name="image">

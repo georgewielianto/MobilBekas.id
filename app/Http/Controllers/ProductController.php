@@ -27,12 +27,14 @@ class ProductController extends Controller
             'name' => 'required|string',
             'image' => 'required|image',
             'price' => 'required|numeric',
+            'description' => 'required|string',
             'category' => 'required|string|in:car', 
         ]);
     
         $productData = [
             'name' => $request->name,
             'price' => $request->price,
+            'description' => $request->description,
         ];
     
         // Upload image using uploadImage function
@@ -53,12 +55,14 @@ class ProductController extends Controller
 {
     $request->validate([
         'name' => 'required',
+        'description' => 'required|string',
         'price' => 'required|numeric',
         'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
 
     $product = Product::find($id);
     $product->name = $request->name;
+    $product->description = $request->description; // Menambahkan deskripsi
     $product->price = $request->price;
 
     if ($request->hasFile('image')) {

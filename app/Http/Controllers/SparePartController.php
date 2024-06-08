@@ -25,24 +25,29 @@ class SparePartController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'price' => 'required|numeric',
         ]);
-
+    
+        // Upload image
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time().'.'.$image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
         }
-
+    
+        // Create SparePart instance with data
         SparePart::create([
             'name' => $request->name,
+            'description' => $request->description, // Save the description
             'image' => $imageName,
             'price' => $request->price,
         ]);
-
+    
         return redirect()->back()->with('success', 'Spare part added successfully');
     }
+    
 
     public function edit(SparePart $sparepart)
     {
@@ -53,24 +58,28 @@ class SparePartController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'price' => 'required|numeric',
         ]);
-
+        
+    
         $sparepart->name = $request->name;
+        $sparepart->description = $request->description; // Update the description
         $sparepart->price = $request->price;
-
+    
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = time().'.'.$image->getClientOriginalExtension();
             $image->move(public_path('images'), $imageName);
             $sparepart->image = $imageName;
         }
-
+    
         $sparepart->save();
-
+    
         return redirect()->route('home')->with('success', 'Spare part updated successfully');
     }
+    
 
     public function addToCart(Request $request, Sparepart $sparepart)
 {
