@@ -19,7 +19,10 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container px-4 px-lg-5">
-            <a class="navbar-brand" href="#!">MobilBekas.id</a>
+
+        <img src="images/logo.png" alt="MobilBekas.id Logo" class="logo-img">
+        <a class="navbar-brand" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">MobilBekas.id</a>
+
 
             @if(Auth::check())
             <div class="nav-item dropdown">
@@ -199,6 +202,24 @@
     </section>
 
 
+    <!-- about us modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="aboutModalLabel">About MobilBekas.id</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Your About Us content here -->
+                <p>MobilBekas.id adalah website yang kami buat untuk mitra kami.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
     <!-- Modal Added to Cart -->

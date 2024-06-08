@@ -10837,3 +10837,19 @@ textarea.form-control-lg {
 .logout-link:hover {
   color: #dc3545 !important;
 }
+
+.logo-img {
+  width: 80px;
+  border-radius: 10px;
+  margin-right: 10px; 
+
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand-text {
+  margin-left: 10px;
+}
