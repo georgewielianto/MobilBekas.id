@@ -78,7 +78,7 @@
                         View Cart
                     </a>
 
-                   
+
 
 
 
@@ -96,21 +96,20 @@
         </div>
     </header>
 
+
+
     <!-- Section Cars-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <h2 class="text-center mb-4">Cars</h2>
+
+
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
-
-
-
                 @foreach($products as $product)
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Product image-->
                         <img class="card-img-top" src="{{ asset('images/' . $product->image) }}" alt="{{ $product->name }}" />
-
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -118,7 +117,6 @@
                                 <h5 class="fw-bolder">{{ $product->name }}</h5>
                                 <!-- Product price-->
                                 {{ formatRupiah($product->price) }}
-
                             </div>
                         </div>
                         <!-- Product actions-->
@@ -129,7 +127,6 @@
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
                                 </form>
-
                                 @if(Auth::user()->is_admin)
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="delete-form d-inline">
                                     @csrf
@@ -143,15 +140,18 @@
                     </div>
                 </div>
                 @endforeach
-
             </div>
         </div>
     </section>
+
 
     <!-- Section Spare Parts-->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <h2 class="text-center mb-4">Spare Parts</h2>
+
+
+
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
                 @foreach($spareparts as $sparepart)

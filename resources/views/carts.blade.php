@@ -21,13 +21,11 @@
         }
 
         footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-}
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
 
-
-       
     </style>
 </head>
 
@@ -139,19 +137,33 @@
             </tbody>
         </table>
         @endif
+
+        <div class="container mt-5">
+            <h2>Total Price</h2>
+            <p>Rp{{ number_format($totalPriceAll, 0, ',', '.') }}</p>
+        </div>
     </div>
+
+    <div class="container mt-5 text-center">
+       <button id="checkoutButton" class="btn btn-success btn-proceed"> <a href="{{ route('checkout') }}" class="btn btn-success btn-proceed">Proceed to Checkout</a></button>
+    </div>
+
+    <div class="container mt-5 text-center">
+    <a href="{{ route('home') }}" class="btn btn-primary btn-back">Back to Home</a>
+    </div>
+  
+
+
 
     <div class="container mt-5">
         <h2>Total Price</h2>
         <p>Rp{{ number_format($totalPriceAll, 0, ',', '.') }}</p>
     </div>
 
-    <div class="container mt-5 text-center">
-        <a href="{{ route('checkout') }}" class="btn btn-success btn-proceed">Proceed to Checkout</a>
-        <a href="{{ route('home') }}" class="btn btn-primary btn-back">Back to Home</a>
+    ="{{ route('home') }}" class="btn btn-primary btn-back">Back to Home</a>
     </div>
 
-<footer class="py-5 bg-dark">
+    <footer class="py-5 bg-dark">
         <div class="container">
             <p class="m-0 text-center text-white">Copyright &copy; MobilBekas.id 2024</p>
         </div>
@@ -159,17 +171,22 @@
 
 
 
- 
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <script>
         $(document).ready(function() {
             var successMessage = "{{ session('success') }}";
             if (successMessage) {
                 alert(successMessage);
             }
+
+            $('#checkoutButton').on('click', function() {
+                alert("Congratulations, your checkout details will be received by the seller.");
+                window.location.href = "{{ route('home') }}";
+            });
         });
     </script>
 </body>

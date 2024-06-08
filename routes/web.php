@@ -68,6 +68,8 @@ Route::get('/admin', function () {
     return view('admin');
 })->name('admin');
 
+
+
 Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 
@@ -153,4 +155,4 @@ Route::delete('/admin/checkout/{id}', [AdminController::class, 'destroy'])->name
 
 
 
-Route::get('/clear-sorting', [ProductController::class, 'clearSorting'])->name('clearSorting');
+
