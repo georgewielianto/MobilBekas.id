@@ -54,34 +54,34 @@ class ProductController extends Controller
     public function update(Request $request, $id)
 {
     $request->validate([
-        'name' => 'required',
-        'description' => 'required|string',
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         'price' => 'required|numeric',
-        'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
     ]);
 
     $product = Product::find($id);
-    $product->name = $request->name;
-    $product->description = $request->description; // Menambahkan deskripsi
-    $product->price = $request->price;
-
+    $product->name = $request->input('name');
+    $product->description = $request->input('description');
+    
     if ($request->hasFile('image')) {
-        // Hapus gambar lama
+        // Menghapus gambar lama jika ada
         if ($product->image && file_exists(public_path('images/' . $product->image))) {
             unlink(public_path('images/' . $product->image));
         }
-        
-        // Simpan gambar baru
         $image = $request->file('image');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
-        $image->move(public_path('images'), $imageName);
-        $product->image = $imageName;
+        $name = time().'.'.$image->getClientOriginalExtension();
+        $destinationPath = public_path('/images');
+        $image->move($destinationPath, $name);
+        $product->image = $name;
     }
 
+    $product->price = $request->input('price');
     $product->save();
 
-    return redirect()->route('home')->with('success', 'Product updated successfully');
+    return redirect()->route('home')->with('success', 'Car updated successfully');
 }
+
 
 
 

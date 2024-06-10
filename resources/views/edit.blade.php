@@ -32,15 +32,15 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label">Car Description</label>
-                <textarea class="form-control" id="description" name="description" required></textarea>
+                <textarea class="form-control" id="description" name="description">{{ $product->description }}</textarea>
             </div>
 
             <div class="mb-3">
                 <label for="image" class="form-label">Car Image</label>
                 <input type="file" class="form-control" id="image" name="image">
                 <img src="{{ asset('images/' . $product->image) }}" alt="{{ $product->name }}" class="img-thumbnail mt-2" width="150">
-
             </div>
+
             <div class="mb-3">
                 <label for="price" class="form-label">Price</label>
                 <input type="number" class="form-control" id="price" name="price" value="{{ $product->price }}">
