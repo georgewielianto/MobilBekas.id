@@ -37,7 +37,6 @@ class SparePartController extends Controller
             $image->move(public_path('images'), $imageName);
         }
     
-        // Create SparePart instance with data
         SparePart::create([
             'name' => $request->name,
             'description' => $request->description, // Save the description
@@ -83,22 +82,18 @@ class SparePartController extends Controller
 
     public function addToCart(Request $request, Sparepart $sparepart)
 {
-    // Ensure the user is authenticated
     if (!auth()->check()) {
         return redirect()->route('login')->with('error', 'You need to be logged in to add items to the cart.');
     }
 
-    // Check if the spare part is already in the cart
     $existingCartItem = Cart_spare::where('user_id', auth()->id())
         ->where('sparepart_id', $sparepart->id)
         ->first();
 
     if ($existingCartItem) {
-        // If it exists, increase the quantity
         $existingCartItem->quantity += 1;
         $existingCartItem->save();
     } else {
-        // If it does not exist, create a new cart item
         Cart_spare::create([
             'user_id' => auth()->id(),
             'sparepart_id' => $sparepart->id,
@@ -106,7 +101,6 @@ class SparePartController extends Controller
         ]);
     }
 
-    // Redirect back with a success message
     return redirect()->route('home')->with('success', 'Product added to cart successfully.');
 }
 

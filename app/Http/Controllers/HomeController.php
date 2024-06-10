@@ -30,7 +30,6 @@ class HomeController extends Controller
         $imageName = time() . '.' . $request->product_image->extension();
         $request->product_image->move(public_path('images'), $imageName);
 
-        // Simpan nama file ke database atau lakukan hal lain yang diperlukan
 
         return back()->with('success', 'Image uploaded successfully.')->with('image', $imageName);
     }

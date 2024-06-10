@@ -211,7 +211,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Your About Us content here -->
+                
                 <p>MobilBekas.id adalah website yang kami buat untuk mitra kami.</p>
             </div>
             <div class="modal-footer">

@@ -21,12 +21,10 @@ class CartController extends Controller
 
     public function update(Request $request, Cart $cartItem)
     {
-        // Validate the new quantity
         $validatedData = $request->validate([
             'quantity' => 'required|integer|min:1'
         ]);
 
-        // Update the cart item quantity
         $cartItem->quantity = $validatedData['quantity'];
         $cartItem->save();
 
@@ -36,7 +34,6 @@ class CartController extends Controller
 
     public function remove(Cart $cartItem)
     {
-        // Delete the cart item
         $cartItem->delete();
 
         return redirect()->route('carts.index')->with('success', 'Item removed from cart.');
@@ -46,11 +43,9 @@ class CartController extends Controller
     {
         $userId = auth()->id();
         
-        // Retrieve cart items for the user
         $cartItems = Cart::where('user_id', $userId)->with('product')->get();
         $cartSpareparts = Cart_spare::where('user_id', $userId)->with('sparepart')->get();
 
-        // Save checkout information
         foreach ($cartItems as $cartItem) {
             Checkout::create([
                 'user_id' => $userId,
@@ -67,25 +62,21 @@ class CartController extends Controller
             ]);
         }
 
-        // Clear the cart for the user
         Cart::where('user_id', $userId)->delete();
         Cart_spare::where('user_id', $userId)->delete();
 
-        // Redirect to the home page with a success message
         return redirect()->route('home')->with('success', 'Checkout completed successfully!');
 
     }
 
     public function check(Request $request)
     {
-        // Lakukan logika untuk memeriksa apakah produk sudah ada di keranjang belanja
-
-        // Misalnya, Anda bisa menggunakan kode berikut untuk mencari item di keranjang berdasarkan product_id
+        
         $existingCartItem = Cart::where('user_id', auth()->id())
             ->where('product_id', $request->product_id)
             ->first();
 
-        // Kemudian Anda bisa mengembalikan respons dalam bentuk JSON
+        
         return response()->json(['exists' => !!$existingCartItem]);
     }
     public function calculateTotalPrice($cartItems, $cartSpareparts)

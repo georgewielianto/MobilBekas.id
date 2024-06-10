@@ -41,7 +41,7 @@ label {
 
 input[type="text"],
 input[type="password"] {
-    width: calc(100% - 40px); /* Adjust width to accommodate the icon */
+    width: calc(100% - 40px); 
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -80,8 +80,8 @@ a:hover {
     right: 10px;
     transform: translateY(-50%);
     cursor: pointer;
-    font-size: 20px; /* Adjust font size as needed */
-    color: #007bff; /* Adjust color as needed */
+    font-size: 20px; 
+    color: #007bff; 
 }
 
 footer {
