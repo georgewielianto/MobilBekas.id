@@ -59,9 +59,9 @@
                 </div>
 
                 <div class="mb-3">
-    <label for="description" class="form-label">SpareParts Description</label>
-    <textarea class="form-control" id="description" name="description" required></textarea>
-</div>
+                    <label for="description" class="form-label">SpareParts Description</label>
+                    <textarea class="form-control" id="description" name="description" required></textarea>
+                </div>
 
                 <div class="mb-3">
                     <label for="image" class="form-label">Product Image</label>
@@ -83,7 +83,9 @@
                     <tr>
                         <th>User ID</th>
                         <th>User Name</th>
+                        <th>User Email</th>
                         <th>Product Name</th>
+                        <th>Product Image</th>
                         <th>Category</th>
                         <th>Actions</th>
                     </tr>
@@ -93,7 +95,14 @@
                     <tr>
                         <td>{{ $checkout->user->id }}</td>
                         <td>{{ $checkout->user->name }}</td>
+                        <td>{{ $checkout->user->email }}</td>
                         <td>{{ $checkout->product_name }}</td>
+                        <td>
+                            <img src="{{ asset('images/' . $checkout->product_image) }}" alt="{{ $checkout->product_name }}" class="img-thumbnail" width="100">
+                        </td>
+
+
+
                         <td>{{ ucfirst($checkout->category) }}</td>
                         <td>
                             <form action="{{ route('checkout.destroy', $checkout->id) }}" method="POST">

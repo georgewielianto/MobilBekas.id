@@ -184,7 +184,7 @@
             }
 
             $('#checkoutButton').on('click', function() {
-                alert("Congratulations, your checkout details will be received by the seller.");
+                alert("Congratulations, your checkout details will be received by the seller.\n \n for further information contact (+62)85767861578");
                 window.location.href = "{{ route('home') }}";
             });
         });

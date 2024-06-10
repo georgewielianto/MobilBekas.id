@@ -50,17 +50,21 @@ class CartController extends Controller
             Checkout::create([
                 'user_id' => $userId,
                 'product_name' => $cartItem->product->name,
+                'product_image' => $cartItem->product->image, 
                 'category' => 'car'
             ]);
         }
-
+        
         foreach ($cartSpareparts as $cartSparepart) {
             Checkout::create([
                 'user_id' => $userId,
                 'product_name' => $cartSparepart->sparepart->name,
+                'product_image' => $cartSparepart->sparepart->image, 
                 'category' => 'sparepart'
             ]);
         }
+        
+        
 
         Cart::where('user_id', $userId)->delete();
         Cart_spare::where('user_id', $userId)->delete();

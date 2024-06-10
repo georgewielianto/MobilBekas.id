@@ -16,6 +16,7 @@ class Checkout extends Model
         'user_id',
         'product_name',
         'category',
+        'product_image',
     ];
 
     public function user()

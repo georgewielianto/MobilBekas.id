@@ -9,7 +9,13 @@ use App\Models\Product;
 
 class SparePartController extends Controller
 {
-    
+    public function index()
+    {
+        // Ambil data dari database, contoh:
+        $spareparts = SparePart::all(); 
+        // Kirim data ke view
+        return view('spareparts', compact('spareparts'));
+    }
 
     public function destroy($id)
     {
@@ -57,14 +63,13 @@ class SparePartController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string', // Ubah menjadi nullable
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'price' => 'required|numeric',
         ]);
-        
     
         $sparepart->name = $request->name;
-        $sparepart->description = $request->description; // Update the description
+        $sparepart->description = $request->description; // Tetap update deskripsi, walaupun nullable
         $sparepart->price = $request->price;
     
         if ($request->hasFile('image')) {
@@ -78,6 +83,7 @@ class SparePartController extends Controller
     
         return redirect()->route('home')->with('success', 'Spare part updated successfully');
     }
+    
     
 
     public function addToCart(Request $request, Sparepart $sparepart)

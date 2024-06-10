@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
    
+    public function index()
+    {
+        // Ambil data dari database, contoh:
+        $products = Product::all(); 
+        // Kirim data ke view
+        return view('cars', compact('products'));
+    }
+
         
 
     public function edit(Product $product)

@@ -31,7 +31,7 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label">SpareParts Description</label>
-                <textarea class="form-control" id="description" name="description" required></textarea>
+                <textarea class="form-control" id="description" name="description"></textarea>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Product Image</label>
