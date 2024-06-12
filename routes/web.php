@@ -41,6 +41,8 @@ Route::get('/home', function () {
     return view('home', [ProductController::class, 'products'])->name('products');
 });
 
+
+
 Route::get('/FAQ', function () {
     return view('FAQ');
 });
@@ -51,7 +53,7 @@ Route::get('/spareparts', [SparePartController::class, 'index']);
 
 
 
-Route::get('/home', [HomeController::class, 'home'])->name('home');
+Route::get('/', [HomeController::class, 'home'])->name('home');
 
 Route::post('/upload', [HomeController::class, 'upload'])->name('upload');
 

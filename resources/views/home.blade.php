@@ -24,28 +24,6 @@
             <img src="images/logo.png" alt="MobilBekas.id Logo" class="logo-img">
             <a class="navbar-brand" href="#" data-bs-toggle="modal" data-bs-target="#aboutModal">MobilBekas.id</a>
 
-
-            @if(Auth::check())
-            <div class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Hello, {{ Auth::user()->name }} !
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                    <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                            @csrf
-                            <button type="submit" class="dropdown-item logout-link">Logout</button>
-                        </form>
-                    </li>
-
-                </ul>
-            </div>
-            @endif
-
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -56,7 +34,6 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                           
                             <li><a class="dropdown-item" href="cars">Cars</a></li>
                             <li>
                                 <hr class="dropdown-divider" />
@@ -70,26 +47,51 @@
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
 
+                <div class="d-flex align-items-center"> <!-- Menggunakan flexbox untuk menempatkan elemen secara horizontal dan menyejajarkan vertikalnya -->
+    <div class="dropdown me-2"> <!-- Dropdown username -->
+        @if(Auth::check())
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Hello, {{ Auth::user()->name }} !
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+            <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li>
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="dropdown-item logout-link">Logout</button>
+                </form>
+            </li>
+        </ul>
+        @endif
+    </div>
 
+    <!-- Tombol Admin Page -->
+    @if(Auth::check() && Auth::user()->is_admin)
+    <a href="{{ route('admin') }}" class="btn btn-secondary me-2">Admin Page</a>
+    @endif
 
-                <div class="d-flex">
-                    @if(Auth::user() && Auth::user()->is_admin)
-                    <a href="{{ route('admin') }}" class="btn btn-secondary me-2">Admin Page</a>
-                    @endif
+    <!-- Tombol Login dan Register -->
+    @if(!Auth::check())
+    <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">Login</a>
+    <a href="{{ route('register') }}" class="btn btn-outline-secondary me-2">Register</a>
+    @endif
 
-                    <a href="{{ url('/carts') }}" class="btn btn-outline-dark">
-                        <i class="bi-cart-fill me-1"></i>
-                        View Cart
-                    </a>
+    <!-- Tombol View Cart -->
+    <a href="{{ url('/carts') }}" class="btn btn-outline-dark">
+        <i class="bi-cart-fill me-1"></i>
+        View Cart
+    </a>
+</div>
 
-
-
-
-
-                </div>
             </div>
         </div>
     </nav>
+
+
+
     <!-- Header-->
     <header class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
@@ -106,7 +108,6 @@
     <section id="cars" class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <h2 class="text-center mb-4">Cars</h2>
-
 
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 @foreach($products as $product)
@@ -137,12 +138,14 @@
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center">
+
+
                                 <form action="{{ route('addToCart', $product->id) }}" method="POST" class="add-to-cart-form">
                                     @csrf
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                     <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
                                 </form>
-                                @if(Auth::user()->is_admin)
+                                @if(Auth::check() && Auth::user()->is_admin)
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="delete-form d-inline">
                                     @csrf
                                     @method('DELETE')
@@ -159,16 +162,12 @@
         </div>
     </section>
 
-
     <!-- Section Spare Parts-->
     <section id="spareparts" class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <h2 class="text-center mb-4">Spare Parts</h2>
 
-
-
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
                 @foreach($spareparts as $sparepart)
                 <div class="col mb-5">
                     <div class="card h-100">
@@ -194,7 +193,7 @@
                                     <button type="submit" class="btn btn-outline-dark mt-auto">Add to cart</button>
                                 </form>
 
-                                @if(Auth::user()->is_admin)
+                                @if(Auth::check() && Auth::user()->is_admin)
                                 <form action="{{ route('spareparts.destroy', $sparepart->id) }}" method="POST" class="delete-form d-inline">
                                     @csrf
                                     @method('DELETE')
@@ -207,10 +206,10 @@
                     </div>
                 </div>
                 @endforeach
-
             </div>
         </div>
     </section>
+
 
 
     <!-- about us modal -->
@@ -309,6 +308,26 @@
         </div>
     </div>
 
+    <!-- Modal Login Required -->
+    <div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-labelledby="loginRequiredModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginRequiredModalLabel">Login Required</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You have to login first to add items to your cart.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 
     <!-- Footer-->
@@ -331,6 +350,8 @@
 
             const formsSpare = document.querySelectorAll('.add-to-cart-form-spare');
             const alreadyAddedModalSpare = new bootstrap.Modal(document.getElementById('alreadyAddedModalSpare'));
+            const loginRequiredModal = new bootstrap.Modal(document.getElementById('loginRequiredModal'));
+
 
 
             forms.forEach(form => {
@@ -338,42 +359,48 @@
                     event.preventDefault();
                     const productId = this.querySelector('input[name="product_id"]').value;
 
-                    fetch('{{ route("carts.check") }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                product_id: productId
+                    const isLoggedIn = "{{ Auth::check() }}";
+
+                    if (!isLoggedIn) {
+                        loginRequiredModal.show();
+                    } else {
+                        fetch('{{ route("carts.check") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    product_id: productId
+                                })
                             })
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.exists) {
-                                alreadyAddedModal.show();
-                            } else {
-                                fetch(this.action, {
-                                    method: this.method,
-                                    body: new FormData(this),
-                                    headers: {
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                    }
-                                }).then(response => {
-                                    if (response.ok) {
-                                        addedToCartModal.show();
-                                    } else {
-                                        throw new Error('Network response was not ok');
-                                    }
-                                }).catch(error => console.error('Error:', error));
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.exists) {
+                                    alreadyAddedModal.show();
+                                } else {
+                                    fetch(this.action, {
+                                        method: this.method,
+                                        body: new FormData(this),
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        }
+                                    }).then(response => {
+                                        if (response.ok) {
+                                            addedToCartModal.show();
+                                        } else {
+                                            throw new Error('Network response was not ok');
+                                        }
+                                    }).catch(error => console.error('Error:', error));
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
                 });
             });
 
@@ -382,42 +409,48 @@
                     event.preventDefault();
                     const sparepartId = this.querySelector('input[name="sparepart_id"]').value;
 
-                    fetch('{{ route("carts.check_spare") }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({
-                                sparepart_id: sparepartId
+                    const isLoggedIn = "{{ Auth::check() }}";
+
+                    if (!isLoggedIn) {
+                        loginRequiredModal.show();
+                    } else {
+                        fetch('{{ route("carts.check_spare") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    sparepart_id: sparepartId
+                                })
                             })
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.exists) {
-                                alreadyAddedModalSpare.show();
-                            } else {
-                                fetch(this.action, {
-                                    method: this.method,
-                                    body: new FormData(this),
-                                    headers: {
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                    }
-                                }).then(response => {
-                                    if (response.ok) {
-                                        addedToCartModal.show();
-                                    } else {
-                                        throw new Error('Network response was not ok');
-                                    }
-                                }).catch(error => console.error('Error:', error));
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                if (data.exists) {
+                                    alreadyAddedModalSpare.show();
+                                } else {
+                                    fetch(this.action, {
+                                        method: this.method,
+                                        body: new FormData(this),
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        }
+                                    }).then(response => {
+                                        if (response.ok) {
+                                            addedToCartModal.show();
+                                        } else {
+                                            throw new Error('Network response was not ok');
+                                        }
+                                    }).catch(error => console.error('Error:', error));
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
                 });
             });
 
@@ -429,6 +462,7 @@
                     if (confirmation) {
                         this.closest('form').submit();
                     }
+
                 });
             });
         });
