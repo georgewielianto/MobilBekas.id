@@ -112,15 +112,16 @@ class SparePartController extends Controller
 
 public function search(Request $request)
 {
-    $query = $request->input('query');
+    $query = strtolower($request->input('query'));
 
-    // Lakukan pencarian produk dan suku cadang
-    $products = Product::where('name', 'like', "%$query%")->get();
-    $spareparts = SparePart::where('name', 'like', "%$query%")->get();
+    // Lakukan pencarian produk dan suku cadang tanpa memandang huruf besar dan kecil
+    $products = Product::whereRaw('LOWER(name) LIKE ?', ["%$query%"])->get();
+    $spareparts = SparePart::whereRaw('LOWER(name) LIKE ?', ["%$query%"])->get();
 
     // Kirim hasil pencarian ke tampilan
     return view('search-results', compact('products', 'spareparts'));
 }
+
 
 
 

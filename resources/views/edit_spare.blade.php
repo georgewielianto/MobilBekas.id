@@ -9,6 +9,27 @@
     <title>Edit Spare Part - MobilBekas.id</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 600px;
+        }
+
+        .btn-cancel {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-cancel:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+    </style>
+    
 </head>
 
 <body>
@@ -45,7 +66,8 @@
             <button type="submit" class="btn btn-primary">Update Spare Part</button>
         </form>
 
-        <a href="{{ route('home') }}" class="btn btn-secondary mt-3">Back</a>
+        <a href="{{ route('home') }}" class="btn btn-cancel mt-3">Cancel</a>
+
     </div>
 
     <!-- Bootstrap JS -->

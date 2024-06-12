@@ -12,6 +12,8 @@
 
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
 </head>
@@ -48,43 +50,43 @@
                 </form>
 
                 <div class="d-flex align-items-center"> <!-- Menggunakan flexbox untuk menempatkan elemen secara horizontal dan menyejajarkan vertikalnya -->
-    <div class="dropdown me-2"> <!-- Dropdown username -->
-        @if(Auth::check())
-        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Hello, {{ Auth::user()->name }} !
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
-            <li>
-                <hr class="dropdown-divider">
-            </li>
-            <li>
-                <form action="{{ route('logout') }}" method="POST" class="d-inline">
-                    @csrf
-                    <button type="submit" class="dropdown-item logout-link">Logout</button>
-                </form>
-            </li>
-        </ul>
-        @endif
-    </div>
+                    <div class="dropdown me-2"> <!-- Dropdown username -->
+                        @if(Auth::check())
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Hello, {{ Auth::user()->name }} !
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item logout-link">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                        @endif
+                    </div>
 
-    <!-- Tombol Admin Page -->
-    @if(Auth::check() && Auth::user()->is_admin)
-    <a href="{{ route('admin') }}" class="btn btn-secondary me-2">Admin Page</a>
-    @endif
+                    <!-- Tombol Admin Page -->
+                    @if(Auth::check() && Auth::user()->is_admin)
+                    <a href="{{ route('admin') }}" class="btn btn-secondary me-2">Admin Page</a>
+                    @endif
 
-    <!-- Tombol Login dan Register -->
-    @if(!Auth::check())
-    <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">Login</a>
-    <a href="{{ route('register') }}" class="btn btn-outline-secondary me-2">Register</a>
-    @endif
+                    <!-- Tombol Login dan Register -->
+                    @if(!Auth::check())
+                    <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="{{ route('register') }}" class="btn btn-outline-secondary me-2">Register</a>
+                    @endif
 
-    <!-- Tombol View Cart -->
-    <a href="{{ url('/carts') }}" class="btn btn-outline-dark">
-        <i class="bi-cart-fill me-1"></i>
-        View Cart
-    </a>
-</div>
+                    <!-- Tombol View Cart -->
+                    <a href="{{ url('/carts') }}" class="btn btn-outline-dark">
+                        <i class="bi-cart-fill me-1"></i>
+                        View Cart
+                    </a>
+                </div>
 
             </div>
         </div>
@@ -92,15 +94,52 @@
 
 
 
-    <!-- Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Shop in style</h1>
-                <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
+      <!-- Carousel -->
+      <div id="headerCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <header class="bg-dark py-5">
+                    <div class="container px-4 px-lg-5 my-5">
+                        <div class="text-center text-white">
+                            <h1 class="display-4 fw-bolder">Shop in style</h1>
+                            <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
+                        </div>
+                    </div>
+                </header>
+            </div>
+            <div class="carousel-item">
+                <header class="bg-primary py-5">
+                    <div class="container px-4 px-lg-5 my-5">
+                        <div class="text-center text-white">
+                            <h1 class="display-4 fw-bolder">Discover New Arrivals</h1>
+                            <p class="lead fw-normal text-white-50 mb-0">Explore the latest trends</p>
+                        </div>
+                    </div>
+                </header>
+            </div>
+            <div class="carousel-item">
+                <header class="bg-success py-5">
+                    <div class="container px-4 px-lg-5 my-5">
+                        <div class="text-center text-white">
+                            <h1 class="display-4 fw-bolder">Exclusive Offers</h1>
+                            <p class="lead fw-normal text-white-50 mb-0">Don't miss out on great deals</p>
+                        </div>
+                    </div>
+                </header>
             </div>
         </div>
-    </header>
+        <button class="carousel-control-prev" type="button" data-bs-target="#headerCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#headerCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+
 
 
 
@@ -336,6 +375,12 @@
             <p class="m-0 text-center text-white">Copyright &copy; MobilBekas.id 2024</p>
         </div>
     </footer>
+
+
+    <!-- Carousel js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
@@ -465,6 +510,8 @@
 
                 });
             });
+          
+
         });
     </script>
 

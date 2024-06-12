@@ -10853,3 +10853,14 @@ textarea.form-control-lg {
 .navbar-brand-text {
   margin-left: 10px;
 }
+
+.swiper-container {
+  width: 100%;
+  height: 100%;
+}
+.swiper-pagination-bullet {
+  background-color: white;
+}
+.swiper-pagination-bullet-active {
+  background-color: #007bff;
+}
