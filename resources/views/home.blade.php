@@ -33,23 +33,26 @@
                         <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="FAQ">FaQ</a></li>
+
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="cars">Cars</a></li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li><a class="dropdown-item" href="spareparts">SpareParts</a></li>
-                        </ul>
-                    </li>
+    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" id="carsLink" href="cars">Cars</a></li>
+        <li>
+            <hr class="dropdown-divider" />
+        </li>
+        <li><a class="dropdown-item" id="sparepartsLink" href="spareparts">SpareParts</a></li>
+    </ul>
+</li>
+
+
                 </ul>
                 <form action="{{ route('search') }}" method="GET" class="d-flex me-auto">
                     <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
 
-                <div class="d-flex align-items-center"> <!-- Menggunakan flexbox untuk menempatkan elemen secara horizontal dan menyejajarkan vertikalnya -->
+                <div class="d-flex align-items-center"> 
                     <div class="dropdown me-2"> <!-- Dropdown username -->
                         @if(Auth::check())
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -96,27 +99,35 @@
 
       <!-- Carousel -->
       <div id="headerCarousel" class="carousel slide" data-bs-ride="carousel">
+
         <div class="carousel-inner">
+
             <div class="carousel-item active">
-                <header class="bg-dark py-5">
-                    <div class="container px-4 px-lg-5 my-5">
-                        <div class="text-center text-white">
-                            <h1 class="display-4 fw-bolder">Shop in style</h1>
-                            <p class="lead fw-normal text-white-50 mb-0">With this shop homepage template</p>
-                        </div>
-                    </div>
-                </header>
-            </div>
-            <div class="carousel-item">
                 <header class="bg-primary py-5">
                     <div class="container px-4 px-lg-5 my-5">
                         <div class="text-center text-white">
-                            <h1 class="display-4 fw-bolder">Discover New Arrivals</h1>
-                            <p class="lead fw-normal text-white-50 mb-0">Explore the latest trends</p>
+                            <h1 class="display-4 fw-bolder">Welcome to MobilBekas.id!</h1>
+                            <p class="lead fw-normal text-white-50 mb-0">Disini tempat untuk mencari mobil impian anda!!!</p>
                         </div>
                     </div>
                 </header>
             </div>
+
+            <div class="carousel-item">
+                <header class="bg-dark py-5">
+                    <div class="container px-4 px-lg-5 my-5">
+                        <div class="text-center text-white">
+                            <h1 class="display-4 fw-bolder"> PERINGATAN!!!</h1>
+                            <p class="lead fw-normal text-white-50 mb-0">INI ADALAH WEBSITE UNTUK MEMPROMOSIKAN MITRA KAMI GITA MOBIL
+                            </p>
+                            <p>1) Website ini hanya untuk promosi semua mobil yang sudah di checkout akan kami simpan untuk anda.</p>
+                            <p>2) Sesudah checkout mohon verfikasi ke penjual kami dengan nomor yang sudah tertera.</p>
+                            <p>3) Semua pembayaran dilakukan langsung di showroom kami TERIMAKASIH!</p>
+                        </div>
+                    </div>
+                </header>
+            </div>
+
             <div class="carousel-item">
                 <header class="bg-success py-5">
                     <div class="container px-4 px-lg-5 my-5">
@@ -367,7 +378,24 @@
     </div>
 
 
-
+<!-- Modal Login Required dropdown menu-->
+<div class="modal fade" id="loginRequiredMenuModal" tabindex="-1" aria-labelledby="loginRequiredMenuModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginRequiredModalLabel">Login Required</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You have to login first to access this page.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer-->
     <footer class="py-5 bg-dark">
@@ -389,6 +417,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const carsLink = document.getElementById('carsLink');
+            const sparepartsLink = document.getElementById('sparepartsLink');
             const forms = document.querySelectorAll('.add-to-cart-form');
             const alreadyAddedModal = new bootstrap.Modal(document.getElementById('alreadyAddedModal'));
             const addedToCartModal = new bootstrap.Modal(document.getElementById('addedToCartModal'));
@@ -396,6 +426,8 @@
             const formsSpare = document.querySelectorAll('.add-to-cart-form-spare');
             const alreadyAddedModalSpare = new bootstrap.Modal(document.getElementById('alreadyAddedModalSpare'));
             const loginRequiredModal = new bootstrap.Modal(document.getElementById('loginRequiredModal'));
+
+            const loginRequiredMenuModal = new bootstrap.Modal(document.getElementById('loginRequiredMenuModal'));
 
 
 
@@ -511,6 +543,16 @@
                 });
             });
           
+            function handleDropdownClick(event) {
+            const isLoggedIn = "{{ Auth::check() }}";
+            if (!isLoggedIn) {
+                event.preventDefault();
+                loginRequiredMenuModal.show();
+            }
+        }
+
+        carsLink.addEventListener('click', handleDropdownClick);
+        sparepartsLink.addEventListener('click', handleDropdownClick);
 
         });
     </script>
