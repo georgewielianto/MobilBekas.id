@@ -35,15 +35,15 @@
                     <li class="nav-item"><a class="nav-link" href="FAQ">FaQ</a></li>
 
                     <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <li><a class="dropdown-item" id="carsLink" href="cars">Cars</a></li>
-        <li>
-            <hr class="dropdown-divider" />
-        </li>
-        <li><a class="dropdown-item" id="sparepartsLink" href="spareparts">SpareParts</a></li>
-    </ul>
-</li>
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" id="carsLink" href="cars">Cars</a></li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li><a class="dropdown-item" id="sparepartsLink" href="spareparts">SpareParts</a></li>
+                        </ul>
+                    </li>
 
 
                 </ul>
@@ -52,7 +52,7 @@
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
 
-                <div class="d-flex align-items-center"> 
+                <div class="d-flex align-items-center">
                     <div class="dropdown me-2"> <!-- Dropdown username -->
                         @if(Auth::check())
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -95,12 +95,12 @@
         </div>
     </nav>
 
-    
 
 
 
-      <!-- Carousel -->
-      <div id="headerCarousel" class="carousel slide" data-bs-ride="carousel">
+
+    <!-- Carousel -->
+    <div id="headerCarousel" class="carousel slide" data-bs-ride="carousel">
 
         <div class="carousel-inner">
 
@@ -120,11 +120,9 @@
                     <div class="container px-4 px-lg-5 my-5">
                         <div class="text-center text-white">
                             <h1 class="display-4 fw-bolder"> PERINGATAN!!!</h1>
-                            <p class="lead fw-normal text-white-50 mb-0">INI ADALAH WEBSITE UNTUK MEMPROMOSIKAN MITRA KAMI GITA MOBIL
+                            <p class="lead fw-normal text-white-50 mb-0">INI ADALAH WEBSITE UNTUK MEMPROMOSIKAN MITRA KAMI GITA MOBIL,
+                                Semua PEMBAYARAN di lakukan di tempat!!!.
                             </p>
-                            <p>1) Website ini hanya untuk promosi semua mobil yang sudah di checkout akan kami simpan untuk anda.</p>
-                            <p>2) Sesudah checkout mohon verfikasi ke penjual kami dengan nomor yang sudah tertera.</p>
-                            <p>3) Semua pembayaran dilakukan langsung di showroom kami TERIMAKASIH!</p>
                         </div>
                     </div>
                 </header>
@@ -165,27 +163,29 @@
                 @foreach($products as $product)
                 <div class="col mb-5">
                     <div class="card h-100">
-                       
-                         <!-- Product images-->
-                    <div id="productCarousel{{ $product->id }}" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            @foreach(['image', 'image2', 'image3', 'image4'] as $key => $img)
-                            @if($product->$img)
-                            <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-                                <img class="d-block w-100" src="{{ asset('images/' . $product->$img) }}" alt="{{ $product->name }}">
+
+                        <!-- Product images-->
+                        <div id="productCarousel{{ $product->id }}" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                @foreach(['image', 'image2', 'image3', 'image4'] as $key => $img)
+                                @if($product->$img)
+                                <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                                    <img class="d-block w-100" src="{{ asset('images/' . $product->$img) }}" alt="{{ $product->name }}" data-bs-toggle="modal" data-bs-target="#productImageViewModal" data-bs-image="{{ asset('images/' . $product->$img) }}">
+                                </div>
+                                @endif
+                                @endforeach
                             </div>
-                            @endif
-                            @endforeach
+
+
+                            <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel{{ $product->id }}" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#productCarousel{{ $product->id }}" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel{{ $product->id }}" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel{{ $product->id }}" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
 
 
                         <!-- Product details-->
@@ -195,17 +195,20 @@
                                 <h5 class="fw-bolder">{{ $product->name }}</h5>
 
                                 <!-- Product Description -->
-                                <div class="mt-5">
+                                <div class="mt-5 text-center"> <!-- Menambahkan kelas text-center di sini -->
                                     <h4>Car Description</h4>
-                                    <ul>
-                                        @foreach(explode("\n", $product->description) as $line)
-                                        <li>{{ $line }}</li>
-                                        @endforeach
-                                    </ul>
+
+                                    @foreach(explode("\n", $product->description) as $line)
+                                    {{ $line }}
+                                    @endforeach
+
                                 </div>
 
+
                                 <!-- Product price-->
-                                {{ formatRupiah($product->price) }}
+                                <div class="mt-3 text-center">
+                                    <h3>{{ formatRupiah($product->price) }}</h3>
+                                </div>
                             </div>
                         </div>
                         <!-- Product actions-->
@@ -244,8 +247,9 @@
                 @foreach($spareparts as $sparepart)
                 <div class="col mb-5">
                     <div class="card h-100">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="{{ asset('images/' . $sparepart->image) }}" alt="{{ $sparepart->name }}" />
+                        <!-- Sparepart image-->
+                        <img class="card-img-top" src="{{ asset('images/' . $sparepart->image) }}" alt="{{ $sparepart->name }}" data-bs-toggle="modal" data-bs-target="#productImageViewModal" data-bs-image="{{ asset('images/' . $sparepart->image) }}">
+
 
                         <!-- Product details-->
                         <div class="card-body p-4">
@@ -401,8 +405,8 @@
     </div>
 
 
-<!-- Modal Login Required dropdown menu-->
-<div class="modal fade" id="loginRequiredMenuModal" tabindex="-1" aria-labelledby="loginRequiredMenuModalLabel" aria-hidden="true">
+    <!-- Modal Login Required dropdown menu-->
+    <div class="modal fade" id="loginRequiredMenuModal" tabindex="-1" aria-labelledby="loginRequiredMenuModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -419,6 +423,22 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal Image Viewer -->
+    <div class="modal fade" id="productImageViewModal" tabindex="-1" aria-labelledby="productImageViewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productImageViewModalLabel">Product Image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="productImageModal" src="" class="img-fluid" alt="Product Image">
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Footer-->
     <footer class="py-5 bg-dark">
@@ -440,6 +460,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const productImageViewModal = new bootstrap.Modal(document.getElementById('productImageViewModal'));
+
             const carsLink = document.getElementById('carsLink');
             const sparepartsLink = document.getElementById('sparepartsLink');
             const forms = document.querySelectorAll('.add-to-cart-form');
@@ -565,17 +587,28 @@
 
                 });
             });
-          
-            function handleDropdownClick(event) {
-            const isLoggedIn = "{{ Auth::check() }}";
-            if (!isLoggedIn) {
-                event.preventDefault();
-                loginRequiredMenuModal.show();
-            }
-        }
 
-        carsLink.addEventListener('click', handleDropdownClick);
-        sparepartsLink.addEventListener('click', handleDropdownClick);
+            function handleDropdownClick(event) {
+                const isLoggedIn = "{{ Auth::check() }}";
+                if (!isLoggedIn) {
+                    event.preventDefault();
+                    loginRequiredMenuModal.show();
+                }
+            }
+
+            carsLink.addEventListener('click', handleDropdownClick);
+            sparepartsLink.addEventListener('click', handleDropdownClick);
+
+            // Handle click on product image to open modal
+            const productImages = document.querySelectorAll('[data-bs-toggle="modal"]');
+            productImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    const imageSrc = this.getAttribute('data-bs-image');
+                    const modalImage = document.getElementById('productImageModal');
+                    modalImage.src = imageSrc;
+                    productImageViewModal.show();
+                });
+            });
 
         });
     </script>
