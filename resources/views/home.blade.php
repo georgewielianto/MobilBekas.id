@@ -95,6 +95,8 @@
         </div>
     </nav>
 
+    
+
 
 
       <!-- Carousel -->
@@ -163,8 +165,29 @@
                 @foreach($products as $product)
                 <div class="col mb-5">
                     <div class="card h-100">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="{{ asset('images/' . $product->image) }}" alt="{{ $product->name }}" />
+                       
+                         <!-- Product images-->
+                    <div id="productCarousel{{ $product->id }}" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @foreach(['image', 'image2', 'image3', 'image4'] as $key => $img)
+                            @if($product->$img)
+                            <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
+                                <img class="d-block w-100" src="{{ asset('images/' . $product->$img) }}" alt="{{ $product->name }}">
+                            </div>
+                            @endif
+                            @endforeach
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel{{ $product->id }}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel{{ $product->id }}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">

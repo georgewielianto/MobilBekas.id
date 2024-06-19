@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Checkout;
 
+
+
 class AdminController extends Controller
 {
     public function index()
@@ -21,6 +23,9 @@ class AdminController extends Controller
 
         return redirect()->route('admin')->with('success', 'Checkout detail deleted successfully.');
     }
+    
+
+  
 }
 
 

@@ -37,9 +37,22 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="image" class="form-label">Product Image</label>
-                    <input type="file" class="form-control" id="image" name="image" required>
+                    <label for="image" class="form-label">Image 1</label>
+                    <input class="form-control" type="file" id="image" name="image">
                 </div>
+                <div class="mb-3">
+                    <label for="image2" class="form-label">Image 2</label>
+                    <input class="form-control" type="file" id="image2" name="image2">
+                </div>
+                <div class="mb-3">
+                    <label for="image3" class="form-label">Image 3</label>
+                    <input class="form-control" type="file" id="image3" name="image3">
+                </div>
+                <div class="mb-3">
+                    <label for="image4" class="form-label">Image 4</label>
+                    <input class="form-control" type="file" id="image4" name="image4">
+                </div>
+
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
                     <input type="number" class="form-control" id="price" name="price" required>
@@ -104,13 +117,18 @@
 
 
                         <td>{{ ucfirst($checkout->category) }}</td>
+
                         <td>
-                            <form action="{{ route('checkout.destroy', $checkout->id) }}" method="POST">
+
+
+
+                            <form action="{{ route('checkout.destroy', $checkout->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </td>
+
                     </tr>
                     @endforeach
                 </tbody>

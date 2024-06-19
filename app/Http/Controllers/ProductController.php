@@ -34,6 +34,9 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string',
             'image' => 'required|image',
+            'image2' => 'required|image',
+            'image3' => 'required|image',
+            'image4' => 'required|image',
             'price' => 'required|numeric',
             'description' => 'required|string',
             'category' => 'required|string|in:car', 
@@ -45,11 +48,23 @@ class ProductController extends Controller
             'description' => $request->description,
         ];
     
-        // Upload image using uploadImage function
-        if ($request->hasFile('image')) {
-            $imagePath = $this->uploadImage($request->file('image'));
-            $productData['image'] = $imagePath;
-        }
+       // Upload image using uploadImage function
+    if ($request->hasFile('image')) {
+        $imagePath = $this->uploadImage($request->file('image'));
+        $productData['image'] = $imagePath;
+    }
+    if ($request->hasFile('image2')) {
+        $imagePath2 = $this->uploadImage($request->file('image2'));
+        $productData['image2'] = $imagePath2;
+    }
+    if ($request->hasFile('image3')) {
+        $imagePath3 = $this->uploadImage($request->file('image3'));
+        $productData['image3'] = $imagePath3;
+    }
+    if ($request->hasFile('image4')) {
+        $imagePath4 = $this->uploadImage($request->file('image4'));
+        $productData['image4'] = $imagePath4;
+    }
     
         // Simpan produk
         $product = new Product($productData);
@@ -60,35 +75,42 @@ class ProductController extends Controller
     
 
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'price' => 'required|numeric',
-    ]);
-
-    $product = Product::find($id);
-    $product->name = $request->input('name');
-    $product->description = $request->input('description');
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image4' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'price' => 'required|numeric',
+        ]);
     
-    if ($request->hasFile('image')) {
-        // Menghapus gambar lama jika ada
-        if ($product->image && file_exists(public_path('images/' . $product->image))) {
-            unlink(public_path('images/' . $product->image));
+        $product = Product::find($id);
+        $product->name = $request->input('name');
+        $product->description = $request->input('description');
+        
+        $images = ['image', 'image2', 'image3', 'image4'];
+        foreach ($images as $image) {
+            if ($request->hasFile($image)) {
+                // Menghapus gambar lama jika ada
+                if ($product->$image && file_exists(public_path('images/' . $product->$image))) {
+                    unlink(public_path('images/' . $product->$image));
+                }
+                $file = $request->file($image);
+                $name = time() . '_' . $image . '.' . $file->getClientOriginalExtension();
+                $destinationPath = public_path('/images');
+                $file->move($destinationPath, $name);
+                $product->$image = $name;
+            }
         }
-        $image = $request->file('image');
-        $name = time().'.'.$image->getClientOriginalExtension();
-        $destinationPath = public_path('/images');
-        $image->move($destinationPath, $name);
-        $product->image = $name;
+    
+        $product->price = $request->input('price');
+        $product->save();
+    
+        return redirect()->route('home')->with('success', 'Car updated successfully');
     }
-
-    $product->price = $request->input('price');
-    $product->save();
-
-    return redirect()->route('home')->with('success', 'Car updated successfully');
-}
+    
 
 
 
@@ -147,6 +169,7 @@ class ProductController extends Controller
 
     return back()->with('success', 'Image uploaded successfully.')->with('image', $imageName);
 }
+
 public function destroy(Product $product)
 {
     // Hapus gambar produk dari penyimpanan
