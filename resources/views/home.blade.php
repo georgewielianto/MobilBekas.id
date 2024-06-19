@@ -170,7 +170,7 @@
                                 @foreach(['image', 'image2', 'image3', 'image4'] as $key => $img)
                                 @if($product->$img)
                                 <div class="carousel-item {{ $key === 0 ? 'active' : '' }}">
-                                    <img class="d-block w-100" src="{{ asset('images/' . $product->$img) }}" alt="{{ $product->name }}" data-bs-toggle="modal" data-bs-target="#productImageViewModal" data-bs-image="{{ asset('images/' . $product->$img) }}">
+                                    <img class="d-block w-100" src="{{ asset('images/' . $product->$img) }}" alt="{{ $product->name }}" data-bs-toggle="modal-view" data-bs-target="#productImageViewModal" data-bs-image="{{ asset('images/' . $product->$img) }}">
                                 </div>
                                 @endif
                                 @endforeach
@@ -248,7 +248,7 @@
                 <div class="col mb-5">
                     <div class="card h-100">
                         <!-- Sparepart image-->
-                        <img class="card-img-top" src="{{ asset('images/' . $sparepart->image) }}" alt="{{ $sparepart->name }}" data-bs-toggle="modal" data-bs-target="#productImageViewModal" data-bs-image="{{ asset('images/' . $sparepart->image) }}">
+                        <img class="card-img-top" src="{{ asset('images/' . $sparepart->image) }}" alt="{{ $sparepart->name }}" data-bs-toggle="modal-view" data-bs-target="#productImageViewModal" data-bs-image="{{ asset('images/' . $sparepart->image) }}">
 
 
                         <!-- Product details-->
@@ -600,7 +600,7 @@
             sparepartsLink.addEventListener('click', handleDropdownClick);
 
             // Handle click on product image to open modal
-            const productImages = document.querySelectorAll('[data-bs-toggle="modal"]');
+            const productImages = document.querySelectorAll('[data-bs-toggle="modal-view"]');
             productImages.forEach(img => {
                 img.addEventListener('click', function() {
                     const imageSrc = this.getAttribute('data-bs-image');
