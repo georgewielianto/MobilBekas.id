@@ -30,48 +30,45 @@ class ProductController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'image' => 'required|image',
-            'image2' => 'required|image',
-            'image3' => 'required|image',
-            'image4' => 'required|image',
-            'price' => 'required|numeric',
-            'description' => 'required|string',
-            'category' => 'required|string|in:car', 
-        ]);
-    
-        $productData = [
-            'name' => $request->name,
-            'price' => $request->price,
-            'description' => $request->description,
-        ];
-    
-       // Upload image using uploadImage function
+{
+    $request->validate([
+        'name' => 'required|string',
+        'image' => 'required|image',
+        'image2' => 'required|image',
+        'image3' => 'required|image',
+        'image4' => 'required|image',
+        'price' => 'required|numeric',
+        'description' => 'required|string',
+        'category' => 'required|string|in:car', 
+    ]);
+
+    $productData = [
+        'name' => $request->name,
+        'price' => $request->price,
+        'description' => $request->description,
+    ];
+
+    // Upload each image and add a unique suffix
     if ($request->hasFile('image')) {
-        $imagePath = $this->uploadImage($request->file('image'));
-        $productData['image'] = $imagePath;
+        $productData['image'] = $this->uploadImage($request->file('image'), '_1');
     }
     if ($request->hasFile('image2')) {
-        $imagePath2 = $this->uploadImage($request->file('image2'));
-        $productData['image2'] = $imagePath2;
+        $productData['image2'] = $this->uploadImage($request->file('image2'), '_2');
     }
     if ($request->hasFile('image3')) {
-        $imagePath3 = $this->uploadImage($request->file('image3'));
-        $productData['image3'] = $imagePath3;
+        $productData['image3'] = $this->uploadImage($request->file('image3'), '_3');
     }
     if ($request->hasFile('image4')) {
-        $imagePath4 = $this->uploadImage($request->file('image4'));
-        $productData['image4'] = $imagePath4;
+        $productData['image4'] = $this->uploadImage($request->file('image4'), '_4');
     }
-    
-        // Simpan produk
-        $product = new Product($productData);
-        $product->save();
 
-        return redirect()->back()->with('success', 'Product added successfully.');
-    }
+    // Save the product
+    $product = new Product($productData);
+    $product->save();
+
+    return redirect()->back()->with('success', 'Product added successfully.');
+}
+
     
 
     public function update(Request $request, $id)
@@ -115,13 +112,14 @@ class ProductController extends Controller
 
 
 
-    private function uploadImage($image)
+    private function uploadImage($image, $suffix = '')
     {
-        $imageName = time() . '.' . $image->extension();
+        $imageName = time() . $suffix . '.' . $image->extension();
         $image->move(public_path('images'), $imageName);
-
+    
         return $imageName;
     }
+    
 
     public function show(Product $product)
     {

@@ -120,7 +120,7 @@
                     <div class="container px-4 px-lg-5 my-5">
                         <div class="text-center text-white">
                             <h1 class="display-4 fw-bolder"> PERINGATAN!!!</h1>
-                            <p class="lead fw-normal text-white-50 mb-0">INI ADALAH WEBSITE UNTUK MEMPROMOSIKAN MITRA KAMI GITA MOBIL,
+                            <p class="lead fw-normal text-white-50 mb-0">INI ADALAH WEBSITE UNTUK MEMPROMOSIKAN MITRA KAMI OTOMEN MOBILINDO,
                                 Semua PEMBAYARAN di lakukan di tempat!!!.
                             </p>
                         </div>
@@ -165,7 +165,7 @@
                     <div class="card h-100">
 
                         <!-- Product images-->
-                        <div id="productCarousel{{ $product->id }}" class="carousel slide" data-bs-ride="carousel">
+                        <div id="productCarousel{{ $product->id }}" class="carousel slide">
                             <div class="carousel-inner">
                                 @foreach(['image', 'image2', 'image3', 'image4'] as $key => $img)
                                 @if($product->$img)
@@ -290,23 +290,24 @@
 
 
     <!-- about us modal -->
-    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="aboutModalLabel">About MobilBekas.id</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-
-                    <p>MobilBekas.id adalah website yang kami buat untuk mitra kami.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
+<div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="aboutModalLabel">About MobilBekas.id</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img src="images/otomen.jpeg" alt="Descriptive text about the image" class="modalImage">
+                <p>MobilBekas.id adalah website yang kami buat untuk mitra kami.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
+
 
 
     <!-- Modal Added to Cart -->
@@ -439,13 +440,34 @@
         </div>
     </div>
 
-
-    <!-- Footer-->
-    <footer class="py-5 bg-dark">
-        <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; MobilBekas.id 2024</p>
+    <footer>
+    <div class="footerContainer">
+        <h2>We Accept</h2>
+        <div class="bankImages">
+            <img src="images/bank_bukopin.jpeg" alt="Bank Bukopin" class="bankImage">
+            <img src="images/oto.jpeg" alt="OTO" class="bankImage">
+            <img src="images/bca_finance.jpg" alt="BCA Finance" class="bankImage">
+            <img src="images/indomobil.jpeg" alt="Indomobil" class="bankImage">
         </div>
-    </footer>
+        
+        <div class="footerNav">
+            <ul>
+                <li><a href="">Home</a></li>
+                <li><a href="">News</a></li>
+                <li><a href="">About</a></li>
+            </ul>
+        </div>
+        
+        <div class="contactInfo">
+            <p>Alamat: Green Garden Blok L 3 No. 22 Jakarta Barat</p>
+            <p>Email: <a href="mailto:mensinanmen@gmail.com">mensinanmen@gmail.com</a></p>
+        </div>
+    </div>
+    <div class="footerBottom">
+        <p>Copyright &copy;2023; <span class="designer">MobilBekas.id</span></p>
+    </div>
+</footer>
+
 
 
     <!-- Carousel js -->

@@ -145,7 +145,7 @@
     </div>
 
     <div class="container mt-5 text-center">
-       <button id="checkoutButton" class="btn btn-success btn-proceed"> <a href="{{ route('checkout') }}" class="btn btn-success btn-proceed">Proceed to Checkout</a></button>
+       <button id="checkoutButton" class="btn btn-success btn-proceed">Proceed to Checkout</button>
     </div>
 
     <div class="container mt-5 text-center">
@@ -183,9 +183,12 @@
                 alert(successMessage);
             }
 
-            $('#checkoutButton').on('click', function() {
-                alert("Congratulations, your checkout details will be received by the seller.\n \n for further information contact (+62)85767861578");
-                window.location.href = "{{ route('home') }}";
+            $('#checkoutButton').on('click', function(e) {
+                e.preventDefault();
+                if (confirm("Are you sure you want to proceed to checkout?")) {
+                    alert("Congratulations, your checkout details will be received by the seller.\n \nFor further information contact (+62)821 8888 5688");
+                    window.location.href = "{{ route('checkout') }}";
+                }
             });
         });
     </script>
