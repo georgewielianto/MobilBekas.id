@@ -4,6 +4,7 @@ George Wielianto - 535220090
 
 
 PANDUAN INSTALASI
+-cp .env.example .env
 -composer install
 -php artisan migrate:fresh --seed
 
