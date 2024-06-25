@@ -60,6 +60,9 @@
                             <div class="form-group mb-0">
                                 <button type="submit" class="btn btn-primary w-100">{{ __('Register') }}</button>
                             </div>
+                            <div class="text-center mt-3">
+                            <a href="{{ route('login') }}">{{ __("Already have an account?") }}</a>
+                        </div>
                         </form>
                     </div>
                 </div>
