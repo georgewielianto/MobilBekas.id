@@ -29,6 +29,7 @@
             "database/factories"
         ],
         "files": [
+            
         ]
     },
     "autoload-dev": {

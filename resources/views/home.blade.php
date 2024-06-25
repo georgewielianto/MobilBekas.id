@@ -207,8 +207,9 @@
 
                                 <!-- Product price-->
                                 <div class="mt-3 text-center">
-                                    <h3>{{ formatRupiah($product->price) }}</h3>
+                                    <h3>{{ 'Rp. ' . number_format($product->price, 2, ',', '.') }}</h3>
                                 </div>
+
                             </div>
                         </div>
                         <!-- Product actions-->
@@ -258,7 +259,11 @@
                                 <h5 class="fw-bolder">{{ $sparepart->name }}</h5>
                                 <p>{{ $sparepart->description }}</p>
                                 <!-- Product price-->
-                                {{ formatRupiah($sparepart->price) }}
+                                <div class="mt-3 text-center">
+                                    <h3>{{ 'Rp. ' . number_format($sparepart->price, 2, ',', '.') }}</h3>
+                                </div>
+
+                               
                             </div>
                         </div>
                         <!-- Product actions-->
@@ -290,23 +295,23 @@
 
 
     <!-- about us modal -->
-<div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="aboutModalLabel">About MobilBekas.id</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <img src="images/otomen.jpeg" alt="Descriptive text about the image" class="modalImage">
-                <p>MobilBekas.id adalah website yang kami buat untuk mitra kami OTOMEN MOBILINDO.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLabel">About MobilBekas.id</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img src="images/otomen.jpeg" alt="Descriptive text about the image" class="modalImage">
+                    <p>MobilBekas.id adalah website yang kami buat untuk mitra kami OTOMEN MOBILINDO.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
@@ -441,32 +446,32 @@
     </div>
 
     <footer>
-    <div class="footerContainer">
-        <h2>We Accept</h2>
-        <div class="bankImages">
-            <img src="images/bank_bukopin.jpeg" alt="Bank Bukopin" class="bankImage">
-            <img src="images/oto.jpeg" alt="OTO" class="bankImage">
-            <img src="images/bca_finance.jpg" alt="BCA Finance" class="bankImage">
-            <img src="images/indomobil.jpeg" alt="Indomobil" class="bankImage">
+        <div class="footerContainer">
+            <h2>We Accept</h2>
+            <div class="bankImages">
+                <img src="images/bank_bukopin.jpeg" alt="Bank Bukopin" class="bankImage">
+                <img src="images/oto.jpeg" alt="OTO" class="bankImage">
+                <img src="images/bca_finance.jpg" alt="BCA Finance" class="bankImage">
+                <img src="images/indomobil.jpeg" alt="Indomobil" class="bankImage">
+            </div>
+
+            <div class="footerNav">
+                <ul>
+                    <li><a href="">Home</a></li>
+                    <li><a href="">News</a></li>
+                    <li><a href="">About</a></li>
+                </ul>
+            </div>
+
+            <div class="contactInfo">
+                <p>Alamat: Green Garden Blok L 3 No. 22 Jakarta Barat</p>
+                <p>Email: <a href="mailto:mensinanmen@gmail.com">mensinanmen@gmail.com</a></p>
+            </div>
         </div>
-        
-        <div class="footerNav">
-            <ul>
-                <li><a href="">Home</a></li>
-                <li><a href="">News</a></li>
-                <li><a href="">About</a></li>
-            </ul>
+        <div class="footerBottom">
+            <p>Copyright &copy;2023; <span class="designer">MobilBekas.id</span></p>
         </div>
-        
-        <div class="contactInfo">
-            <p>Alamat: Green Garden Blok L 3 No. 22 Jakarta Barat</p>
-            <p>Email: <a href="mailto:mensinanmen@gmail.com">mensinanmen@gmail.com</a></p>
-        </div>
-    </div>
-    <div class="footerBottom">
-        <p>Copyright &copy;2023; <span class="designer">MobilBekas.id</span></p>
-    </div>
-</footer>
+    </footer>
 
 
 
