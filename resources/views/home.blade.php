@@ -469,7 +469,7 @@
             </div>
         </div>
         <div class="footerBottom">
-            <p>Copyright &copy;2023; <span class="designer">MobilBekas.id</span></p>
+            <p>Copyright &copy;2024; <span class="designer">MobilBekas.id</span></p>
         </div>
     </footer>
 
