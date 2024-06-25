@@ -20,12 +20,15 @@
         "phpunit/phpunit": "^10.1",
         "spatie/laravel-ignition": "^2.0"
     },
-    "autoload": {
+   "autoload": {
         "psr-4": {
             "App\\": "app/"
         },
+        "classmap": [
+            "database/seeders",
+            "database/factories"
+        ],
         "files": [
-            "app/Helpers/helpers.php"
         ]
     },
     "autoload-dev": {

@@ -299,7 +299,7 @@
             </div>
             <div class="modal-body">
                 <img src="images/otomen.jpeg" alt="Descriptive text about the image" class="modalImage">
-                <p>MobilBekas.id adalah website yang kami buat untuk mitra kami.</p>
+                <p>MobilBekas.id adalah website yang kami buat untuk mitra kami OTOMEN MOBILINDO.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

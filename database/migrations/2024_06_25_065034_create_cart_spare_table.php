@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSparepartsTable extends Migration
+class CreateCartSpareTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateSparepartsTable extends Migration
      */
     public function up()
     {
-        Schema::create('spareparts', function (Blueprint $table) {
+        Schema::create('cart_spare', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->decimal('price', 10, 2);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('sparepart_id')->constrained()->onDelete('cascade');
+            $table->integer('quantity')->default(1);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateSparepartsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('spareparts');
+        Schema::dropIfExists('cart_spare');
     }
 }
