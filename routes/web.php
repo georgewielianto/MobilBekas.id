@@ -164,6 +164,12 @@ Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::delete('/admin/checkout/{id}', [AdminController::class, 'destroy'])->name('checkout.destroy');
 
 
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+    Route::delete('/admin/checkout/{id}', [AdminController::class, 'destroy'])->name('checkout.destroy');
+});
+
+
 
 
 
