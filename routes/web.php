@@ -93,13 +93,6 @@ Route::post('/cart/add/{product}', [ProductController::class, 'addToCart'])->nam
 Route::post('/cart/add-sparepart/{sparepart}', [SparePartController::class, 'addToCart'])->name('addToCartSparepart');
 
 
-
-
-
-
-
-
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/carts', [CartController::class, 'index'])->name('carts.index');
     Route::patch('/carts/{cartItem}', [CartController::class, 'update'])->name('cart.update');
@@ -152,6 +145,7 @@ Route::get('/search', [ProductController::class, 'search'])->name('search');
 
 Route::get('/search', [SparePartController::class, 'search'])->name('search');
 
+//profile
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
