@@ -114,8 +114,10 @@
                                 <!-- Product name-->
                                 <h5 class="fw-bolder">{{ $sparepart->name }}</h5>
                                 <p>{{ $sparepart->description }}</p>
-                                <!-- Product price-->
-                                {{ formatRupiah($sparepart->price) }}
+                               <!-- sparepart price-->
+                               <div class="mt-3 text-center">
+                                    <h3>{{ 'Rp. ' . number_format($sparepart->price, 2, ',', '.') }}</h3>
+                                </div>
                             </div>
                         </div>
                         <!-- Product actions-->

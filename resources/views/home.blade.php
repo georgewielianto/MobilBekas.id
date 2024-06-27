@@ -195,7 +195,7 @@
                                 <h5 class="fw-bolder">{{ $product->name }}</h5>
 
                                 <!-- Product Description -->
-                                <div class="mt-5 text-center"> <!-- Menambahkan kelas text-center di sini -->
+                                <div class="mt-5 text-center"> 
                                     <h4>Car Description</h4>
 
                                     @foreach(explode("\n", $product->description) as $line)

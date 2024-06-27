@@ -113,17 +113,19 @@
                                 <h5 class="fw-bolder">{{ $product->name }}</h5>
 
                                 <!-- Product Description -->
-                                <div class="mt-5">
+                                <div class="mt-5 text-center"> 
                                     <h4>Car Description</h4>
-                                    <ul>
-                                        @foreach(explode("\n", $product->description) as $line)
-                                        <li>{{ $line }}</li>
-                                        @endforeach
-                                    </ul>
+
+                                    @foreach(explode("\n", $product->description) as $line)
+                                    {{ $line }}
+                                    @endforeach
+
                                 </div>
 
                                 <!-- Product price-->
-                                {{ formatRupiah($product->price) }}
+                                <div class="mt-3 text-center">
+                                    <h3>{{ 'Rp. ' . number_format($product->price, 2, ',', '.') }}</h3>
+                                </div>
                             </div>
                         </div>
                         <!-- Product actions-->
