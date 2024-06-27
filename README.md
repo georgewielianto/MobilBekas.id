@@ -1,6 +1,7 @@
 George Wielianto - 535220090
 
-
+Pembagian Tugas:
+George Wielianto: Mengerjakan semua bagian website Front-end - Back-end
 
 
 
